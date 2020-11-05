@@ -1,30 +1,35 @@
 import { Router } from 'express';
-import { uuid } from 'uuidv4';
 import { startOfHour, parseISO, isEqual } from 'date-fns';
+import Appointment from '../models/appointment';
 
 const routes = Router();
 
-const appointments: { provider: string; date: Date; id: string; }[] = [];
+interface AppointmentInterface {
+  provider: string,
+  date: Date
+}
 
-routes.post('/', (req, res) => {
-  const { provider, date } = req.body;
+routes.post('/', async (req, res) => {
+  const { providerId, date } = req.body;
 
   const parsedDate = startOfHour(parseISO(date));
 
-  const id = uuid();
-  const appointmentInSameDate = appointments.find(appointment => isEqual(appointment.date, parsedDate));
+  const appointmentInSameDate = await Appointment.findOne({ date: parsedDate });
 
   if(appointmentInSameDate) {
-    return res.status(400).json({ msg: 'Error: Appointment already booked' })
+    return res.status(400).json({ msg: 'Error: Appointment already booked' });
   }
+  try {
+    const appointment = await Appointment.create({
+      providerId,
+      date: parsedDate
+    });
 
-  const appointment = {
-    provider,
-    date: parsedDate,
-    id
+    return res.status(201).json(appointment);
+  } catch(e) {
+    console.log(e);
+    return res.status(500).json({ msg: 'Error: Failed at creating appointment' });
   }
-  appointments.push(appointment);
-  res.status(201).json(appointment);
 })
 
 export default routes;
