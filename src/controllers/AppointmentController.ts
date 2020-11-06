@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
 import Appointment from '../models/appointment';
+import User from "../models/user";
 
 
 export default {
@@ -13,6 +14,12 @@ export default {
 
     if(appointmentInSameDate) {
       return res.status(400).json({ msg: 'Error: Appointment already booked' });
+    }
+
+    const appointmentProvider = await User.findById(providerId);
+
+    if(!appointmentProvider) {
+      return res.status(400).json({ msg: 'Error: Provider not found'})
     }
     try {
       const appointment = await Appointment.create({

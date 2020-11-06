@@ -3,12 +3,19 @@ import mongoose from '../database';
 const appointmentSchema = new mongoose.Schema({
   date: {
     type: Date,
-    required: true,
-    unique: true
+    required: true
   },
   providerId: {
     type: String,
     required: true
+  },
+  createdAt: {
+    type: String,
+    default: Date.now
+  },
+  updatedAt: {
+    type: String,
+    default: Date.now
   }
 });
 
