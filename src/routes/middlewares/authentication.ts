@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import authConfig from '../../config/auth';
+import User from '../../models/user';
 
 interface TokenPayload {
   id: string
 }
 
-export default function authentication(req: Request, res: Response, next: NextFunction) {
+export default async function authentication(req: Request, res: Response, next: NextFunction) {
   try {
     const auth = req.headers.authorization;
 
@@ -20,6 +21,12 @@ export default function authentication(req: Request, res: Response, next: NextFu
 
     if(!decoded) {
       return res.status(401).json({ msg: 'Error: Failed at authentication: Invalid Token' })
+    }
+
+    const user = await User.findById(decoded.id);
+
+    if(!user) {
+      return res.status(404).json({ msg: 'Error: User not found'})
     }
 
     req.userId = decoded.id;

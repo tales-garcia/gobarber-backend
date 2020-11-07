@@ -16,11 +16,6 @@ export default {
       return res.status(400).json({ msg: 'Error: Appointment already booked' });
     }
 
-    const appointmentProvider = await User.findById(providerId);
-
-    if(!appointmentProvider) {
-      return res.status(400).json({ msg: 'Error: Provider not found'})
-    }
     try {
       const appointment = await Appointment.create({
         providerId,
