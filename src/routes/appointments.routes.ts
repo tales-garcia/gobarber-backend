@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import AppointmentDao from '../controllers/AppointmentController';
+import AppointmentControlller from '../controllers/AppointmentController';
 
 const routes = Router();
 
-routes.post('/', AppointmentDao.create);
-routes.get('/', AppointmentDao.index);
+routes.post('/', AppointmentControlller.create);
+routes.get('/', AppointmentControlller.index);
 
 export default routes;

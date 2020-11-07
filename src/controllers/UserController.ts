@@ -22,7 +22,8 @@ export default {
         email,
         password
       }) as UserData;
-      delete user.password;
+
+      user.password = undefined;
 
       return res.status(201).json(user);
     } catch(e) {
@@ -32,7 +33,9 @@ export default {
   },
   index: async (req: Request, res: Response) => {
     try {
-      const users = await User.find();
+      const users = await User.find() as UserData[];
+
+      users.forEach(user => user.password = undefined);
 
       return res.status(200).json({ users });
     } catch(e) {
