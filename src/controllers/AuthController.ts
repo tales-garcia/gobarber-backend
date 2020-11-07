@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import mongoose from '../database';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import authConfig from '../config/auth';
 
 interface UserData extends mongoose.Document {
   name: string,
@@ -31,9 +32,8 @@ export default {
       }
       user.password = undefined;
 
-      const token = jwt.sign({}, 'b732b8998707f85bff73c1bf01e16d14', {
-        expiresIn: '1d',
-        subject: user.id
+      const token = jwt.sign({ id: user._id }, authConfig.secret, {
+        expiresIn: '1d'
       });
 
       return res.status(200).json({ user, token });
