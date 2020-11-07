@@ -41,8 +41,5 @@ export default {
       console.log(e);
       return res.status(500).json({ msg: 'Error: Failed at logging in'})
     }
-  },
-  logout: async (req: Request, res: Response) => {
-
   }
 }

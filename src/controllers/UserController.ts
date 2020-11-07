@@ -43,10 +43,20 @@ export default {
       return res.status(500).json({ msg: 'Error: Failed at listing users'});
     }
   },
-  update: async (req: Request, res: Response) => {
+  updateAvatar: async (req: Request, res: Response) => {
+    try {
+      const { filename } = req.file;
 
-  },
-  delete: async (req: Request, res: Response) => {
+      await User.findByIdAndUpdate(req.userId, {
+        $set: {
+          avatar: filename
+        }
+      });
 
+      return res.status(204).send();
+    } catch(e) {
+      console.log(e);
+      return res.status(500).json({ msg: 'Error: Failed at updating avatar'});
+    }
   }
 }

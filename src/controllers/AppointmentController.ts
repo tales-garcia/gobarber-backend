@@ -43,11 +43,5 @@ export default {
       console.log(e);
       return res.status(500).json({ msg: 'Error: Failed at listing appointments' })
     }
-  },
-  delete: (req: Request, res: Response) => {
-
-  },
-  update: (req: Request, res: Response) => {
-
   }
 }
