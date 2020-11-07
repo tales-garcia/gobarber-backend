@@ -22,7 +22,7 @@ export default {
         email,
         password
       }) as UserData;
-      user.password = undefined;
+      delete user.password;
 
       return res.status(201).json(user);
     } catch(e) {
@@ -31,7 +31,14 @@ export default {
     }
   },
   index: async (req: Request, res: Response) => {
+    try {
+      const users = await User.find();
 
+      return res.status(200).json({ users });
+    } catch(e) {
+      console.log(e);
+      return res.status(500).json({ msg: 'Error: Failed at listing users'});
+    }
   },
   update: async (req: Request, res: Response) => {
 
