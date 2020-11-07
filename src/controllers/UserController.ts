@@ -1,6 +1,8 @@
 import User from '../models/user';
 import { Request, Response } from 'express';
 import mongoose from '../database';
+import fs from 'fs';
+import path from 'path';
 
 interface UserData extends mongoose.Document {
   name: string,
@@ -46,6 +48,10 @@ export default {
   updateAvatar: async (req: Request, res: Response) => {
     try {
       const { filename } = req.file;
+
+      if(!fs.existsSync(path.resolve(__dirname, '..', '..', 'uploads', filename))) {
+        return res.status(404).json({ msg: 'Error: Failed at updating user avatar: File not found' })
+      }
 
       await User.findByIdAndUpdate(req.userId, {
         $set: {
