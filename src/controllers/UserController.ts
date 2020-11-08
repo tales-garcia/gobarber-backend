@@ -7,7 +7,8 @@ import path from 'path';
 interface UserData extends mongoose.Document {
   name: string,
   password: string | undefined,
-  email: string
+  email: string,
+  avatar: string
 }
 
 export default {
@@ -48,9 +49,11 @@ export default {
   updateAvatar: async (req: Request, res: Response) => {
     try {
       const { filename } = req.file;
-
-      if(!fs.existsSync(path.resolve(__dirname, '..', '..', 'uploads', filename))) {
-        return res.status(404).json({ msg: 'Error: Failed at updating user avatar: File not found' })
+      const user = await User.findById(req.userId) as UserData;
+      if(user.avatar) {
+        if(await fs.promises.stat(path.resolve(__dirname, '..', '..', 'uploads', user.avatar))) {
+          await fs.promises.unlink(path.resolve(__dirname, '..', '..', 'uploads', user.avatar));
+        }
       }
 
       await User.findByIdAndUpdate(req.userId, {
