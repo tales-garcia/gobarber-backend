@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
-import Appointment from '../models/appointment';
-import User from "../models/user";
+import Appointment from '../infra/mongoose/entities/appointment';
 
 
 export default {
