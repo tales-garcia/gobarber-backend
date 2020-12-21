@@ -1,4 +1,4 @@
-import mongoose from '../../../../../shared/infra/database';
+import mongoose from '@shared/infra/database';
 
 const appointmentSchema = new mongoose.Schema({
   date: {
