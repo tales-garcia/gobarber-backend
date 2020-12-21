@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  api:
+    build: .
+    depends_on:
+      - mongo
+    ports:
+      - "3333:3333"
+    networks:
+      - gobarber_backend
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - gobarber_backend
+
+networks:
+  gobarber_backend:
