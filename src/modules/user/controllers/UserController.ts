@@ -51,8 +51,16 @@ export default {
       const { filename } = req.file;
       const user = await User.findById(req.userId) as UserData;
       if(user.avatar) {
-        if(await fs.promises.stat(path.resolve(__dirname, '..', '..', 'uploads', user.avatar))) {
-          await fs.promises.unlink(path.resolve(__dirname, '..', '..', 'uploads', user.avatar));
+        if(await fs.promises.stat(process.env.NODE_ENV === 'prod' ?
+          path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)
+          :
+          path.resolve(__dirname, 'uploads', user.avatar)
+        )) {
+          await fs.promises.unlink(process.env.NODE_ENV === 'prod' ?
+            path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)
+            :
+            path.resolve(__dirname, 'uploads', user.avatar)
+          );
         }
       }
 
