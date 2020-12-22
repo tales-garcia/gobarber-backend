@@ -1,9 +1,9 @@
 import User from '../infra/mongoose/entities/user';
 import { Request, Response } from 'express';
-import mongoose from '@shared/infra/database';
+import mongoose from '../../../shared/infra/database';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import authConfig from '@config/auth';
+import authConfig from '../../../config/auth';
 
 interface UserData extends mongoose.Document {
   name: string,

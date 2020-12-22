@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import authConfig from '../../../../../config/auth';
-import User from '../@modules/user/infra/mongoose/entities/user';
+import User from '../../../../../modules/user/infra/mongoose/entities/user';
 
 interface TokenPayload {
   id: string
