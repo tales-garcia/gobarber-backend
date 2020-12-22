@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p .",
-    "js:bundle": "browserify --no-bundle-external --entry javascript/shared/infra/http/server.js --outfile ./dist/bundle.js",
+    "js:bundle": "browserify --no-bundle-external --entry tmp/javascript/shared/infra/http/server.js --outfile ./dist/bundle.js",
     "prod:server": "NODE_ENV=prod node dist/bundle.js",
     "dev:server": "ts-node-dev --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "commit": "cz"
