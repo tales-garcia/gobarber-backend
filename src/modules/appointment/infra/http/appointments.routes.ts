@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import AppointmentControlller from '@modules/appointment/controllers/AppointmentController';
-import authentication from '../../../../shared/infra/http/routes/middlewares/authentication';
+import authentication from '../../../user/infra/http/middlewares/authentication';
 
 const routes = Router();
 

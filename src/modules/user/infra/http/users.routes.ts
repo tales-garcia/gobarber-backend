@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import UserController from '../../controllers/UserController';
-import authentication from '../../../../shared/infra/http/routes/middlewares/authentication';
+import authentication from './middlewares/authentication';
 import uploadConfig from '../../../../config/upload';
 import multer from 'multer';
 
