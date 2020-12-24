@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import AppointmentControlller from '@modules/appointment/controllers/AppointmentController';
+import AppointmentControlller from '../../controllers/AppointmentController';
 import authentication from '../../../user/infra/http/middlewares/authentication';
 
 const routes = Router();
