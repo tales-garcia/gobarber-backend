@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import UserController from '../../controllers/UserController';
 import authentication from './middlewares/authentication';
-import uploadConfig from '../../../../config/upload';
+import uploadConfig from '@config/upload';
 import multer from 'multer';
 
 const routes = Router();
