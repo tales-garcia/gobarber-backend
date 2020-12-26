@@ -5,7 +5,7 @@ export default {
     return await Appointment.findOne(filter);
   },
   async create(appointment: object) {
-    await Appointment.create(appointment);
+    return await Appointment.create(appointment);
   },
   async find(filter?: object) {
     return await Appointment.find(filter);
