@@ -4,6 +4,7 @@ import mongoose from '@shared/infra/database';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
+import IUserDAO from '../DAOs/IUserDAO';
 
 interface UserData extends mongoose.Document {
   name: string,
@@ -11,13 +12,15 @@ interface UserData extends mongoose.Document {
   email: string
 }
 
-export default {
-  login: async (req: Request, res: Response) => {
+export default class AuthController {
+  constructor(private userDao: IUserDAO) {}
+
+  async login(req: Request, res: Response) {
     const { email, password } = req.body;
 
     try {
 
-      const user = await new User().findByEmail(email) as UserData;
+      const user = await this.userDao.findByEmail(email) as UserData;
 
       if(!user) {
         return res.status(404).json({ msg: 'Error: User not found'});
