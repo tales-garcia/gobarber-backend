@@ -1,4 +1,4 @@
-import User from '../infra/mongoose/entities/user';
+import User from '../infra/mongoose/DAOs/UserDAO';
 import { Request, Response } from 'express';
 import mongoose from '@shared/infra/database';
 import bcrypt from 'bcrypt';

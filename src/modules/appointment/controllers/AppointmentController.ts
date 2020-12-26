@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
-import Appointment from '../infra/mongoose/entities/appointment';
+import AppointmentDAO from '../infra/mongoose/DAOs/AppointmentDAO';
 
 
 export default {
@@ -9,14 +9,14 @@ export default {
 
     const parsedDate = startOfHour(parseISO(date));
 
-    const appointmentInSameDate = await Appointment.findOne({ date: parsedDate });
+    const appointmentInSameDate = await AppointmentDAO.findOne({ date: parsedDate });
 
     if(appointmentInSameDate) {
       return res.status(400).json({ msg: 'Error: Appointment already booked' });
     }
 
     try {
-      const appointment = await Appointment.create({
+      const appointment = await AppointmentDAO.create({
         providerId,
         date: parsedDate
       });
@@ -29,7 +29,7 @@ export default {
   },
   index: async (req: Request, res: Response) => {
     try {
-      const appointments = await Appointment.find();
+      const appointments = await AppointmentDAO.find();
 
       return res.status(200).json(appointments);
 
