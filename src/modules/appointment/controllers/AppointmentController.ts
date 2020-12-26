@@ -9,7 +9,7 @@ export default {
 
     const parsedDate = startOfHour(parseISO(date));
 
-    const appointmentInSameDate = await AppointmentDAO.findOne({ date: parsedDate });
+    const appointmentInSameDate = await new AppointmentDAO().findByDate(parsedDate);
 
     if(appointmentInSameDate) {
       return res.status(400).json({ msg: 'Error: Appointment already booked' });

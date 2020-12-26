@@ -17,7 +17,7 @@ export default {
 
     try {
 
-      const user = await User.findOne({ email }) as UserData;
+      const user = await new User().findByEmail(email) as UserData;
 
       if(!user) {
         return res.status(404).json({ msg: 'Error: User not found'});
