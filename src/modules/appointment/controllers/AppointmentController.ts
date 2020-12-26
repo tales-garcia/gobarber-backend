@@ -1,22 +1,24 @@
 import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
-import AppointmentDAO from '../infra/mongoose/DAOs/AppointmentDAO';
+import IAppointmentDAO from "../DAOs/IAppointmentDAO";
 
 
-export default {
-  create: async (req: Request, res: Response) => {
+export default class AppointmentsController {
+  constructor(private appointmentDAO: IAppointmentDAO) {}
+
+  async create(req: Request, res: Response) {
     const { providerId, date } = req.body;
 
     const parsedDate = startOfHour(parseISO(date));
 
-    const appointmentInSameDate = await new AppointmentDAO().findByDate(parsedDate);
+    const appointmentInSameDate = await this.appointmentDAO.findByDate(parsedDate);
 
     if(appointmentInSameDate) {
       return res.status(400).json({ msg: 'Error: Appointment already booked' });
     }
 
     try {
-      const appointment = await AppointmentDAO.create({
+      const appointment = await this.appointmentDAO.create({
         providerId,
         date: parsedDate
       });
@@ -26,10 +28,10 @@ export default {
       console.log(e);
       return res.status(500).json({ msg: 'Error: Failed at creating appointment' });
     }
-  },
-  index: async (req: Request, res: Response) => {
+  }
+  async index(req: Request, res: Response) {
     try {
-      const appointments = await AppointmentDAO.find();
+      const appointments = await this.appointmentDAO.find();
 
       return res.status(200).json(appointments);
 
