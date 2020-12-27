@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
+import { inject, injectable } from 'tsyringe';
 import IUserDao from '../DAOs/IUserDAO';
 
+@injectable()
 export default class UserController {
-  constructor(private userDao: IUserDao) {}
+  constructor(
+    @inject('UserDAO')
+    private userDao: IUserDao
+  ) {}
 
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body;

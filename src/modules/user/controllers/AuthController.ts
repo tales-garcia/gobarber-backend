@@ -3,9 +3,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import IUserDAO from '../DAOs/IUserDAO';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export default class AuthController {
-  constructor(private userDao: IUserDAO) {}
+  constructor(
+    @inject('UserDAO')
+    private userDao: IUserDAO
+  ) {}
 
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
