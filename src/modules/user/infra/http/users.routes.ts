@@ -10,8 +10,8 @@ const routes = Router();
 const userController = new UserController(new UserDAO());
 const upload = multer(uploadConfig);
 
-routes.post('/', userController.create);
-routes.get('/', userController.index);
-routes.patch('/avatar', authentication, upload.single('avatar'), userController.updateAvatar);
+routes.post('/', userController.create.bind(userController));
+routes.get('/', userController.index.bind(userController));
+routes.patch('/avatar', authentication, upload.single('avatar'), userController.updateAvatar.bind(userController));
 
 export default routes;

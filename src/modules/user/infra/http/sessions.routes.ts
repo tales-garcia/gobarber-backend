@@ -6,6 +6,6 @@ const routes = Router();
 
 const authController = new AuthController(new UserDAO());
 
-routes.post('/', authController.login);
+routes.post('/', authController.login.bind(authController));
 
 export default routes;

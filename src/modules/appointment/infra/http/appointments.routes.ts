@@ -7,9 +7,9 @@ const routes = Router();
 
 routes.use(authentication);
 
-const appointmentControlller = new AppointmentController(new AppointmentDAO());
+const appointmentController = new AppointmentController(new AppointmentDAO());
 
-routes.post('/', appointmentControlller.create);
-routes.get('/', appointmentControlller.index);
+routes.post('/', appointmentController.create.bind(appointmentController));
+routes.get('/', appointmentController.index.bind(appointmentController));
 
 export default routes;
