@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
 import IAppointmentDAO from "../DAOs/IAppointmentDAO";
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export default class AppointmentsController {
-  constructor(private appointmentDAO: IAppointmentDAO) {}
+  constructor(
+    @inject('AppointmentDAO')
+    private appointmentDAO: IAppointmentDAO
+  ) {}
 
   async create(req: Request, res: Response) {
     const { providerId, date } = req.body;
