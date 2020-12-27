@@ -1,14 +1,7 @@
 import { Request, Response } from 'express';
-import mongoose from '@shared/infra/database';
 import fs from 'fs';
 import path from 'path';
 import IUserDao from '../DAOs/IUserDAO';
-
-interface UserData extends mongoose.Document {
-  name: string,
-  email: string,
-  avatar: string
-}
 
 export default class UserController {
   constructor(private userDao: IUserDao) {}
@@ -25,7 +18,7 @@ export default class UserController {
         name,
         email,
         password
-      }) as UserData;
+      });
 
       return res.status(201).json(user);
     } catch(e) {
@@ -35,7 +28,7 @@ export default class UserController {
   }
   async index(req: Request, res: Response) {
     try {
-      const users = await this.userDao.find() as UserData[];
+      const users = await this.userDao.find();
 
       return res.status(200).json({ users });
     } catch(e) {
@@ -46,7 +39,7 @@ export default class UserController {
   async updateAvatar(req: Request, res: Response) {
     try {
       const { filename } = req.file;
-      const user = await this.userDao.findById(req.userId) as UserData;
+      const user = await this.userDao.findById(req.userId);
       if(user.avatar) {
         if(await fs.promises.stat(process.env.NODE_ENV === 'prod' ?
           path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)

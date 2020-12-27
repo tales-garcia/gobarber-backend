@@ -1,16 +1,8 @@
-import User from '../infra/mongoose/DAOs/UserDAO';
 import { Request, Response } from 'express';
-import mongoose from '@shared/infra/database';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import IUserDAO from '../DAOs/IUserDAO';
-
-interface UserData extends mongoose.Document {
-  name: string,
-  password: string | undefined,
-  email: string
-}
 
 export default class AuthController {
   constructor(private userDao: IUserDAO) {}
@@ -20,7 +12,7 @@ export default class AuthController {
 
     try {
 
-      const user = await this.userDao.findByEmail(email) as UserData;
+      const user = await this.userDao.findByEmail(email);
 
       if(!user) {
         return res.status(404).json({ msg: 'Error: User not found'});

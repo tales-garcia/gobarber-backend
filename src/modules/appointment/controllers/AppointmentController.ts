@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
 import IAppointmentDAO from "../DAOs/IAppointmentDAO";
 
-
 export default class AppointmentsController {
   constructor(private appointmentDAO: IAppointmentDAO) {}
 

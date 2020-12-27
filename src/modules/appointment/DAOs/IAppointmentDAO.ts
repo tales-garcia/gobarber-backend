@@ -1,8 +1,8 @@
-import mongoose from "@shared/infra/database";
+import IAppointmentDTO from "../DTOs/IAppointmentDTO";
 
 export default interface IAppointmentDAO {
-  create(appointment: object): Promise<mongoose.Document>;
-  findOne(filter: object): Promise<mongoose.Document>;
-  find(filter?: object): Promise<mongoose.Document[]>;
-  findByDate(date: Date): Promise<mongoose.Document>;
+  create(appointment: IAppointmentDTO): Promise<IAppointmentDTO>;
+  findOne(filter: object): Promise<IAppointmentDTO>;
+  find(filter?: object): Promise<IAppointmentDTO[]>;
+  findByDate(date: Date): Promise<IAppointmentDTO>;
 }
