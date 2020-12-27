@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
-import IUserDAO from '../DAOs/IUserDAO';
+import IUserDAO from '../../../DAOs/IUserDAO';
 import { inject, injectable } from 'tsyringe';
 
 @injectable()

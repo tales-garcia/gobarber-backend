@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { startOfHour, parseISO } from 'date-fns';
-import IAppointmentDAO from "../DAOs/IAppointmentDAO";
+import IAppointmentDAO from "../../../DAOs/IAppointmentDAO";
 import { inject, injectable } from 'tsyringe';
 
 @injectable()

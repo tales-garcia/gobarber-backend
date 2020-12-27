@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import AppointmentController from '../../controllers/AppointmentController';
+import AppointmentController from './controllers/AppointmentController';
 import authentication from '@modules/user/infra/http/middlewares/authentication';
 import { container } from 'tsyringe';
 

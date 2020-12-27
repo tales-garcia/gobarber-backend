@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import fs from 'fs';
 import path from 'path';
 import { inject, injectable } from 'tsyringe';
-import IUserDao from '../DAOs/IUserDAO';
+import IUserDao from '../../../DAOs/IUserDAO';
 
 @injectable()
 export default class UserController {
