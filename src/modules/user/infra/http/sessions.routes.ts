@@ -1,11 +1,8 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
-import AuthController from './controllers/AuthController';
+import SessionsController from './controllers/SessionsController';
 
 const routes = Router();
 
-const authController = container.resolve(AuthController);
-
-routes.post('/', authController.login.bind(authController));
+routes.post('/', SessionsController.create);
 
 export default routes;

@@ -1,68 +1,44 @@
+import IUserDtO from '@modules/user/DTOs/IUserDTO';
+import CreateUserService from '@modules/user/services/CreateUserService';
+import UpdateAvatarService from '@modules/user/services/UpdateAvatarService';
+import AppError from '@shared/errors/AppError';
 import { Request, Response } from 'express';
-import fs from 'fs';
-import path from 'path';
-import { inject, injectable } from 'tsyringe';
-import IUserDao from '../../../DAOs/IUserDAO';
+import { container } from 'tsyringe';
+import UserDAO from '../../mongoose/DAOs/UserDAO';
 
-@injectable()
-export default class UserController {
-  constructor(
-    @inject('UserDAO')
-    private userDao: IUserDao
-  ) {}
-
+export default {
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body;
     try {
-      const userWithSameEmail = await this.userDao.findByEmail(email);
-
-      if(userWithSameEmail) {
-        return res.status(400).json({ msg: 'Error: Failed at creating user: User already created' })
-      }
-      const user = await this.userDao.create({
-        name,
-        email,
-        password
-      });
+      const user = await container.resolve(CreateUserService).execute({ name, email, password } as IUserDtO);
 
       return res.status(201).json(user);
     } catch(e) {
+      if(e instanceof AppError) {
+        return res.status(e.statusCode).json({ msg: e.message });
+      }
+
       console.log(e);
       return res.status(500).json({ msg: 'Error: Failed at creating user'});
     }
-  }
+  },
   async index(req: Request, res: Response) {
     try {
-      const users = await this.userDao.find();
+      const users = await new UserDAO().find();
 
       return res.status(200).json({ users });
     } catch(e) {
       console.log(e);
       return res.status(500).json({ msg: 'Error: Failed at listing users'});
     }
-  }
+  },
   async updateAvatar(req: Request, res: Response) {
     try {
       const { filename } = req.file;
-      const user = await this.userDao.findById(req.userId);
-      if(user.avatar) {
-        if(await fs.promises.stat(process.env.NODE_ENV === 'prod' ?
-          path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)
-          :
-          path.resolve(__dirname, 'uploads', user.avatar)
-        )) {
-          await fs.promises.unlink(process.env.NODE_ENV === 'prod' ?
-            path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)
-            :
-            path.resolve(__dirname, 'uploads', user.avatar)
-          );
-        }
-      }
 
-      await this.userDao.findByIdAndUpdate(req.userId, {
-        $set: {
-          avatar: filename
-        }
+      await container.resolve(UpdateAvatarService).execute({
+        filename,
+        userId: req.userId
       });
 
       return res.status(204).send();
