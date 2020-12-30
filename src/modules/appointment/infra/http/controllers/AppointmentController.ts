@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import AppointmentDAO from "../../mongoose/DAOs/AppointmentDAO";
 import CreateAppointmentService from "@modules/appointment/services/CreateAppointmentService";
 import { container } from "tsyringe";
 import AppError from "@shared/errors/AppError";
+import ListAppointmentsService from "@modules/appointment/services/ListAppointmentsService";
 
 export default {
   async create(req: Request, res: Response) {
@@ -26,7 +26,7 @@ export default {
   },
   async index(req: Request, res: Response) {
     try {
-      const appointments = await new AppointmentDAO().find();
+      const appointments = await container.resolve(ListAppointmentsService).execute();
 
       return res.status(200).json(appointments);
 

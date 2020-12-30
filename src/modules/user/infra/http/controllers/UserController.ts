@@ -1,5 +1,6 @@
 import IUserDtO from '@modules/user/DTOs/IUserDTO';
 import CreateUserService from '@modules/user/services/CreateUserService';
+import ListUsersService from '@modules/user/services/ListUsersService';
 import UpdateAvatarService from '@modules/user/services/UpdateAvatarService';
 import AppError from '@shared/errors/AppError';
 import { Request, Response } from 'express';
@@ -24,7 +25,7 @@ export default {
   },
   async index(req: Request, res: Response) {
     try {
-      const users = await new UserDAO().find();
+      const users = await container.resolve(ListUsersService).execute();
 
       return res.status(200).json({ users });
     } catch(e) {
