@@ -14,7 +14,7 @@ describe('Create appointment', () => {
       }
     );
 
-    expect(appointment).toHaveProperty('id');
+    expect(appointment).toHaveProperty('_id');
     expect(appointment.providerId).toBe('ffff');
   });
   it('should not be able to create an already booked appointment', async () => {

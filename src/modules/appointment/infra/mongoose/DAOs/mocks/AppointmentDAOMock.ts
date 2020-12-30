@@ -3,7 +3,7 @@ import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
 import { uuid } from "uuidv4";
 
 interface Appointment extends IAppointmentDTO {
-  id: string;
+  _id: string;
 }
 
 export default class AppointmentDAOMock implements IAppointmentDAO {
@@ -33,7 +33,7 @@ export default class AppointmentDAOMock implements IAppointmentDAO {
   async create(appointmentDto: IAppointmentDTO) {
     const appointment: Appointment = appointmentDto as Appointment;
 
-    appointment.id = uuid();
+    appointment._id = uuid();
 
     this.appointments.push(appointment);
     return appointment;

@@ -33,7 +33,7 @@ export default class UpdateUserService {
     }
     user.password = undefined;
 
-    const token = jwt.sign({ id: user._id }, authConfig.secret, {
+    const token = jwt.sign({ _id: (user as any)._id }, authConfig.secret, {
       expiresIn: '1d'
     });
 

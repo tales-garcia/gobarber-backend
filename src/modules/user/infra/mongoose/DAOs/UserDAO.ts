@@ -13,11 +13,11 @@ export default class UserDAO implements IUserDAO {
   async findByEmail(email: string) {
     return await User.findOne({ email }) as unknown as IUserDtO;
   }
-  async findById(id: string) {
-    return await User.findById(id) as unknown as IUserDtO;
+  async findById(_id: string) {
+    return await User.findById(_id) as unknown as IUserDtO;
   }
-  async findByIdAndUpdate(id: string, query: IOptionalKeysUser) {
-    return await User.findByIdAndUpdate(id, {
+  async findByIdAndUpdate(_id: string, query: IOptionalKeysUser) {
+    return await User.findByIdAndUpdate(_id, {
       $set: {
         query
       }

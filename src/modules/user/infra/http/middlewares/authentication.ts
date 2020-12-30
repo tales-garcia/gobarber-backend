@@ -4,7 +4,7 @@ import authConfig from '@config/auth';
 import User from '../../mongoose/entities/user';
 
 interface TokenPayload {
-  id: string
+  _id: string
 }
 
 export default async function authentication(req: Request, res: Response, next: NextFunction) {
@@ -23,13 +23,13 @@ export default async function authentication(req: Request, res: Response, next: 
       return res.status(401).json({ msg: 'Error: Failed at authentication: Invalid Token' })
     }
 
-    const user = await User.findById(decoded.id);
+    const user = await User.findById(decoded._id);
 
     if(!user) {
       return res.status(404).json({ msg: 'Error: User not found'})
     }
 
-    req.userId = decoded.id;
+    req.userId = decoded._id;
 
     next();
 
