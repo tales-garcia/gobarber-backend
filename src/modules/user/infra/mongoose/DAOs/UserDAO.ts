@@ -1,7 +1,13 @@
 import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
-import { MongooseUpdateQuery } from "mongoose";
 import User from "../entities/user"
+
+interface IOptionalKeysUser {
+  email?: string;
+  name?: string;
+  password?: string | undefined;
+  avatar?: string;
+}
 
 export default class UserDAO implements IUserDAO {
   async findByEmail(email: string) {
@@ -10,8 +16,12 @@ export default class UserDAO implements IUserDAO {
   async findById(id: string) {
     return await User.findById(id) as unknown as IUserDtO;
   }
-  async findByIdAndUpdate(id: string, query: MongooseUpdateQuery<IUserDtO>) {
-    return await User.findByIdAndUpdate(id, query) as unknown as IUserDtO;
+  async findByIdAndUpdate(id: string, query: IOptionalKeysUser) {
+    return await User.findByIdAndUpdate(id, {
+      $set: {
+        query
+      }
+    }) as unknown as IUserDtO;
   }
   async find(filter?: object) {
     const users = await User.find(filter) as unknown as IUserDtO[];
@@ -20,7 +30,7 @@ export default class UserDAO implements IUserDAO {
 
     return users;
   }
-  async create(user: object) {
+  async create(user: IUserDtO) {
     const createdUser = await User.create(user) as unknown as IUserDtO;
 
     createdUser.password = undefined;
