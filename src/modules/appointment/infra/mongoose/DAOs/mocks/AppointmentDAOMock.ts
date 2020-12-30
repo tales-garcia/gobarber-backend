@@ -27,7 +27,7 @@ export default class AppointmentDAOMock implements IAppointmentDAO {
 
       const results = Object.keys(filter).map(key => appointment[key] === filter[key]);
 
-      return !results.some(result => !result);
+      return !results.some(result => result);
     });
   }
   async create(appointmentDto: IAppointmentDTO) {
