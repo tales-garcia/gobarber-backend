@@ -3,5 +3,4 @@ export default interface IUserDtO {
   name: string;
   password: string | undefined;
   avatar: string;
-  _id: string;
 }
