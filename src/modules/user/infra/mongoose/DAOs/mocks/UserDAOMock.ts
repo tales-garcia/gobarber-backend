@@ -67,8 +67,6 @@ export default class UserDAOMock implements IUserDAO {
 
     this.users.push(createdUser);
 
-    createdUser.password = undefined;
-
-    return createdUser;
+    return { ...createdUser, password: undefined };
   }
 }
