@@ -2,9 +2,7 @@ import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
 import Appointment from "../entities/appointment"
 
-interface IAppointment extends IAppointmentDTO {
-  _id: string
-}
+interface IAppointment extends Assign<IAppointmentDTO, "_id", string> {}
 
 export default class AppointmentDAO implements IAppointmentDAO {
   async findByDate(date: Date) {

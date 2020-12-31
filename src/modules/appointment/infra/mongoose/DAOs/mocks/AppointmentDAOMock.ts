@@ -2,9 +2,7 @@ import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
 import { uuid } from "uuidv4";
 
-interface Appointment extends IAppointmentDTO {
-  _id: string;
-}
+interface Appointment extends Assign<IAppointmentDTO, "_id", string> {}
 
 export default class AppointmentDAOMock implements IAppointmentDAO {
   private appointments: Appointment[] = [];

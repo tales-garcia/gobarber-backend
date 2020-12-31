@@ -2,9 +2,7 @@ import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import User from "../entities/user"
 
-interface IUser extends IUserDtO {
-  _id: string;
-}
+interface IUser extends Assign<IUserDtO, "_id", string> {}
 
 export default class UserDAO implements IUserDAO {
   async findByEmail(email: string) {

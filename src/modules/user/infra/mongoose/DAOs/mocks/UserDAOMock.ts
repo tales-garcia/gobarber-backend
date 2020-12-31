@@ -2,9 +2,7 @@ import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import { uuid } from "uuidv4";
 
-interface IUser extends IUserDtO {
-  _id: string;
-}
+interface IUser extends Assign<IUserDtO, "_id", string> {}
 
 export default class UserDAOMock implements IUserDAO {
   private users: IUser[] = [];
