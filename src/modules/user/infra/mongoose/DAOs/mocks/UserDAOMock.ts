@@ -13,7 +13,7 @@ export default class UserDAOMock implements IUserDAO {
     return this.users.find(user => {
       const results = Object.keys(filter).map(key => user[key] === filter[key]);
 
-      return !results.some(result => result);
+      return !results.some(result => !result);
     });
   }
   async findByEmail(email: string) {

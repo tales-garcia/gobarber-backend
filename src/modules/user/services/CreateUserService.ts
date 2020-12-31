@@ -21,7 +21,7 @@ export default class CreateUserService {
       email,
       password
     });
-    console.log(user)
+
     return user;
   }
 }
