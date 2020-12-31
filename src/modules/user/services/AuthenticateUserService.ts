@@ -11,7 +11,7 @@ interface Request {
 }
 
 @injectable()
-export default class UpdateUserService {
+export default class AuthenticateUserService {
   constructor(
     @inject('UserDAO')
     private userDao: IUserDAO
