@@ -9,7 +9,7 @@ interface IUser extends IUserDtO {
 export default class UserDAOMock implements IUserDAO {
   private users: IUser[] = [];
 
-  async findOne(filter: object) {
+  async findOne(filter: OptionalKeys<IUser>) {
     return this.users.find(user => {
       const results = Object.keys(filter).map(key => user[key] === filter[key]);
 
@@ -22,7 +22,7 @@ export default class UserDAOMock implements IUserDAO {
   async findById(_id: string) {
     return await this.findOne({ _id });
   }
-  async findByIdAndUpdate(_id: string, query: IUserDtO) {
+  async findByIdAndUpdate(_id: string, query: OptionalKeys<IUser>) {
     const updatedUser = await this.findById(_id);
 
     const keys = Object.keys(query);
@@ -43,7 +43,7 @@ export default class UserDAOMock implements IUserDAO {
 
     return updatedUser;
   }
-  async find(filter?: object) {
+  async find(filter?: OptionalKeys<IUser>) {
     if(!filter) {
       return this.users;
     }

@@ -2,11 +2,8 @@ import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import User from "../entities/user"
 
-interface IOptionalKeysUser {
-  email?: string;
-  name?: string;
-  password?: string | undefined;
-  avatar?: string;
+interface IUser extends IUserDtO {
+  _id: string;
 }
 
 export default class UserDAO implements IUserDAO {
@@ -16,14 +13,14 @@ export default class UserDAO implements IUserDAO {
   async findById(_id: string) {
     return await User.findById(_id) as unknown as IUserDtO;
   }
-  async findByIdAndUpdate(_id: string, query: IOptionalKeysUser) {
+  async findByIdAndUpdate(_id: string, query: OptionalKeys<IUser>) {
     return await User.findByIdAndUpdate(_id, {
       $set: {
         query
       }
     }) as unknown as IUserDtO;
   }
-  async find(filter?: object) {
+  async find(filter?: OptionalKeys<IUser>) {
     const users = await User.find(filter) as unknown as IUserDtO[];
 
     users.forEach(user => user.password = undefined);
