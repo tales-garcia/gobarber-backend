@@ -32,9 +32,7 @@ export default class UpdateAvatarService {
     }
 
     await this.userDao.findByIdAndUpdate(userId, {
-      $set: {
         avatar: filename
-      }
     });
   }
 }
