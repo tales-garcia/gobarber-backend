@@ -24,10 +24,6 @@ export default class UpdateUserService {
       throw new AppError('Error: User not found', 404);
     }
 
-    if (!user.password) {
-      throw new Error();
-    }
-
     if (!await bcrypt.compare(password, user.password)) {
       throw new AppError('Error: Failed at logging: Wrong password', 401);
     }
