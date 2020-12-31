@@ -2,6 +2,7 @@ import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IUserDtO from "../DTOs/IUserDTO";
+import bcrypt from 'bcrypt';
 
 @injectable()
 export default class CreateUserService {
@@ -16,10 +17,13 @@ export default class CreateUserService {
     if (userWithSameEmail) {
       throw new AppError('Error: Failed at creating user: User already created', 400);
     }
+
+    const hashedPassword = await bcrypt.hash(password, 8);
+
     const user = await this.userDao.create({
       name,
       email,
-      password
+      password: hashedPassword
     });
 
     return user;
