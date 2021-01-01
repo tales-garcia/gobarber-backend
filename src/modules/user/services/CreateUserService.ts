@@ -3,12 +3,15 @@ import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IUserDtO from "../DTOs/IUserDTO";
 import bcrypt from 'bcrypt';
+import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 @injectable()
 export default class CreateUserService {
   constructor(
     @inject('UserDAO')
-    private userDao: IUserDAO
+    private userDao: IUserDAO,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider
   ) { }
 
   public async execute({ email, name, password }: IUserDtO) {
@@ -18,12 +21,13 @@ export default class CreateUserService {
       throw new AppError('Error: Failed at creating user: User already created', 400);
     }
 
-    const hashedPassword = await bcrypt.hash(password, 8);
+    const hashedPassword = await this.hashProvider.generateHash(password);
 
     const user = await this.userDao.create({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      avatar: undefined
     });
 
     return user;
