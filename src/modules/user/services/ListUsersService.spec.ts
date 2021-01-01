@@ -1,8 +1,11 @@
 import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import UserDAOMock from "../infra/mongoose/DAOs/mocks/UserDAOMock";
+import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 import CreateUserService from "./CreateUserService";
 import ListUsersService from './ListUsersService';
+
+const hashProvider = new HashProviderMock();
 
 describe('Create user', () => {
   it('should be able to list users', async () => {
@@ -15,7 +18,7 @@ describe('Create user', () => {
   it('should be able to list a created user', async () => {
     const userDao = new UserDAOMock();
 
-    await new CreateUserService(userDao).execute(
+    await new CreateUserService(userDao, hashProvider).execute(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
