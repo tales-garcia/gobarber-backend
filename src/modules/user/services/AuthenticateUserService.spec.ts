@@ -45,4 +45,12 @@ describe('Create user', () => {
       password: '1234567'
     })).rejects.toBeInstanceOf(AppError);
   });
+  it('should not be able to authenticate an unregistered user', async () => {
+    const userDao = new UserDAOMock();
+
+    expect(new AuthenticateUserService(userDao, hashProvider).execute({
+      email: 'johndoe@example.com',
+      password: '123456'
+    })).rejects.toBeInstanceOf(AppError);
+  });
 });
