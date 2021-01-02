@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import fs from 'fs';
 import path from 'path';
+import { directory } from "@config/upload";
 
 interface Request {
   filename: string;
@@ -18,16 +19,8 @@ export default class UpdateAvatarService {
   public async execute({ userId, filename }: Request) {
     const user = await this.userDao.findById(userId);
     if (user.avatar) {
-      if (await fs.promises.stat(process.env.NODE_ENV === 'prod' ?
-        path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)
-        :
-        path.resolve(__dirname, 'uploads', user.avatar)
-      )) {
-        await fs.promises.unlink(process.env.NODE_ENV === 'prod' ?
-          path.resolve(__dirname, '..', '..', '..', '..', 'uploads', user.avatar)
-          :
-          path.resolve(__dirname, 'uploads', user.avatar)
-        );
+      if (await fs.promises.stat(directory)) {
+        await fs.promises.unlink(path.join(directory, user.avatar));
       }
     }
 
