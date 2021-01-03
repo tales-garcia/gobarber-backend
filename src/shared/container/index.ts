@@ -1,6 +1,7 @@
 import { container } from "tsyringe";
 
 import '@modules/user/providers';
+import './providers';
 
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import AppointmentDAO from "@modules/appointment/infra/mongoose/DAOs/AppointmentDAO";
