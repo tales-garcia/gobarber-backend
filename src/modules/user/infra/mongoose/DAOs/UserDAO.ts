@@ -14,7 +14,7 @@ export default class UserDAO implements IUserDAO {
   async findByIdAndUpdate(_id: string, query: OptionalKeys<IUser>) {
     return await User.findByIdAndUpdate(_id, {
       $set: {
-        query
+        ...query
       }
     }) as unknown as IUserDtO;
   }
