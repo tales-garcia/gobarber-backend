@@ -1,8 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
-import fs from 'fs';
-import path from 'path';
-import { directory } from "@config/upload";
+import IStorageProvider from "@shared/container/providers/StorageProvider/models/IStorageProvider";
 
 interface Request {
   filename: string;
@@ -13,16 +11,18 @@ interface Request {
 export default class UpdateAvatarService {
   constructor(
     @inject('UserDAO')
-    private userDao: IUserDAO
+    private userDao: IUserDAO,
+    @inject('StorageProvider')
+    private storageProvider: IStorageProvider
   ) { }
 
   public async execute({ userId, filename }: Request) {
     const user = await this.userDao.findById(userId);
     if (user.avatar) {
-      if (await fs.promises.stat(directory)) {
-        await fs.promises.unlink(path.join(directory, user.avatar));
-      }
+      await this.storageProvider.deleteFile(user.avatar);
     }
+
+    await this.storageProvider.saveFile(filename);
 
     await this.userDao.findByIdAndUpdate(userId, {
         avatar: filename

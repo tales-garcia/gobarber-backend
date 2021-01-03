@@ -12,6 +12,8 @@ RUN npm run build
 
 RUN npm run js:bundle
 
-RUN mkdir dist/uploads
+RUN mkdir dist/tmp
+
+RUN mkdir dist/tmp/uploads
 
 ENTRYPOINT ["npm", "run", "prod:server"]
