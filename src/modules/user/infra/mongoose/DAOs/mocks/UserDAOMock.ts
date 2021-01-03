@@ -26,9 +26,7 @@ export default class UserDAOMock implements IUserDAO {
     const keys = Object.keys(query);
 
     keys.forEach(key => {
-      if(updatedUser[key]) {
-        updatedUser[key] = query[key];
-      }
+      updatedUser[key] = query[key];
     })
 
     this.users.forEach(user => {
