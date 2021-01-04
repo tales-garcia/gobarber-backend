@@ -2,7 +2,6 @@ import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IUserDtO from "../DTOs/IUserDTO";
-import bcrypt from 'bcrypt';
 import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 @injectable()

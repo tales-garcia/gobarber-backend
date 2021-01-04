@@ -1,7 +1,6 @@
 import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import authConfig from '@config/auth';
 import IHashProvider from "../providers/HashProvider/models/IHashProvider";

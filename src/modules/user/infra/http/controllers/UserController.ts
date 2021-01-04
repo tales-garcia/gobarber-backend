@@ -5,7 +5,6 @@ import UpdateAvatarService from '@modules/user/services/UpdateAvatarService';
 import AppError from '@shared/errors/AppError';
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import UserDAO from '../../mongoose/DAOs/UserDAO';
 
 export default {
   async create(req: Request, res: Response) {
