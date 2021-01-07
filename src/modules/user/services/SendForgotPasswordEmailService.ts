@@ -16,7 +16,7 @@ export default class SendForgotPasswordEmailService {
   ) { }
 
   public async execute({ email }: Assign<object, "email", string>) {
-    const user = await this.userDao.findByEmail(email) as unknown as Assign<object, "_id", string>;
+    const user = await this.userDao.findByEmail(email);
 
     if(!user) {
       throw new AppError('Error: User not found', 404);
