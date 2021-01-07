@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import DiskStorageProviderMock from "@shared/container/providers/StorageProvider/mocks/DiskStorageProviderMock";
-import UserDAOMock from "../infra/mongoose/DAOs/mocks/UserDAOMock";
+import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import UpdateAvatarService from "./UpdateAvatarService";
 
 describe('Update user avatar', () => {

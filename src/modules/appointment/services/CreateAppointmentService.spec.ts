@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
-import AppointmentDAOMock from "../infra/mongoose/DAOs/mocks/AppointmentDAOMock";
+import AppointmentDAOMock from "../DAOs/mocks/AppointmentDAOMock";
 import CreateAppointmentService from "./CreateAppointmentService";
 
 describe('Create appointment', () => {

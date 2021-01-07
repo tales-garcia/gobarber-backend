@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import UserDAOMock from "../infra/mongoose/DAOs/mocks/UserDAOMock";
+import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import CreateUserService from "./CreateUserService";
 import AuthenticateUserService from './AuthenticateUserService';
 import AppError from '@shared/errors/AppError';

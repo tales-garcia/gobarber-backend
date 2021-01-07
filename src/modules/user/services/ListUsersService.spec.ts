@@ -1,6 +1,6 @@
 import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
-import UserDAOMock from "../infra/mongoose/DAOs/mocks/UserDAOMock";
+import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 import CreateUserService from "./CreateUserService";
 import ListUsersService from './ListUsersService';

@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import AppointmentDAOMock from "../infra/mongoose/DAOs/mocks/AppointmentDAOMock";
+import AppointmentDAOMock from "../DAOs/mocks/AppointmentDAOMock";
 import ListAppointmentsService from "./ListAppointmentsService";
 
 describe('List appointments', () => {

@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import MailProviderMock from "@shared/container/providers/MailProvider/mocks/MailProviderMock";
-import UserDAOMock from "../infra/mongoose/DAOs/mocks/UserDAOMock";
+import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import SendForgotPasswordEmailService from "./SendForgotPasswordEmailService";
 import AppError from '@shared/errors/AppError';
 
