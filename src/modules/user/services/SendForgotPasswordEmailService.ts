@@ -8,6 +8,7 @@ export default class SendForgotPasswordEmailService {
   constructor(
     @inject('UserDAO')
     private userDao: IUserDAO,
+    @inject('MailProvider')
     private mailProvider: IMailProvider
   ) { }
 
