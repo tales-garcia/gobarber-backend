@@ -47,4 +47,12 @@ describe('Reset user password', () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+  it('should not be able to reset an unregistered user password', async () => {
+    const { token } = await userTokenDao.generate('id');
+
+    expect(service.execute({
+      token,
+      password: '1223334444'
+    })).rejects.toBeInstanceOf(AppError);
+  });
 });
