@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import UserTokenDAOMock from '../DAOs/mocks/UserTokenDAOMock';
@@ -37,5 +38,13 @@ describe('Reset user password', () => {
     expect(generateHash).toBeCalledWith('1223334444');
     expect(user).toHaveProperty('password', '1223334444');
 
+  });
+  it('should not be able to reset password with an unregistered token', async () => {
+    expect(
+      service.execute({
+        password: '123456',
+        token: 'token'
+      })
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
