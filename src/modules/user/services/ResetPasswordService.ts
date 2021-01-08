@@ -1,4 +1,5 @@
 import AppError from "@shared/errors/AppError";
+import { differenceInHours } from "date-fns";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IUserTokenDAO from "../DAOs/IUserTokenDAO";
@@ -31,6 +32,10 @@ export default class SendForgotPasswordEmailService {
 
     if (!user) {
       throw new AppError('Error: User not found', 404);
+    }
+
+    if(differenceInHours(Date.now(), userToken.createdAt) > 2) {
+      throw new AppError('Error: token expired', 400);
     }
 
     await this.userDao.findByIdAndUpdate(user._id, {
