@@ -2,7 +2,7 @@ import IUserTokenDTO from "@modules/user/DTOs/IUserTokenDTO";
 import { uuid } from "uuidv4";
 import IUserTokenDAO from "../IUserTokenDAO";
 
-type IUserToken = Assign<IUserTokenDTO, "_id" | "token", string>;
+type IUserToken = Assign<Assign<IUserTokenDTO, "_id" | "token", string>, "createdAt" | "updatedAt", Date>;
 
 export default class UserTokenDAOMock implements IUserTokenDAO {
   private tokens: IUserToken[] = [];
@@ -11,7 +11,9 @@ export default class UserTokenDAOMock implements IUserTokenDAO {
     const token = {
       userId,
       _id: uuid(),
-      token: uuid()
+      token: uuid(),
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     this.tokens.push(token);
