@@ -2,6 +2,7 @@ import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IUserTokenDAO from "../DAOs/IUserTokenDAO";
+import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 interface IRequest {
   token: string,
@@ -14,7 +15,9 @@ export default class SendForgotPasswordEmailService {
     @inject('UserDAO')
     private userDao: IUserDAO,
     @inject('UserTokenDAO')
-    private userTokenDao: IUserTokenDAO
+    private userTokenDao: IUserTokenDAO,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider
   ) { }
 
   public async execute({ token, password }: IRequest) {
@@ -31,7 +34,7 @@ export default class SendForgotPasswordEmailService {
     }
 
     await this.userDao.findByIdAndUpdate(user._id, {
-      password
+      password: await this.hashProvider.generateHash(password)
     });
   }
 }
