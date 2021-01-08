@@ -55,4 +55,25 @@ describe('Reset user password', () => {
       password: '1223334444'
     })).rejects.toBeInstanceOf(AppError);
   });
+  it('should not be able to reset the password if a 2 hours timeout is reached', async () => {
+    const { _id } = await userDao.create({
+      avatar: undefined,
+      email: 'johndoe@example.com',
+      name: 'John Doe',
+      password: 'johndoe'
+    });
+
+    const { token } = await userTokenDao.generate(_id);
+
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      const date = new Date();
+
+      return date.setHours(date.getHours() + 3);
+    });
+
+    await expect(service.execute({
+      token,
+      password: '1223334444'
+    })).rejects.toBeInstanceOf(AppError);
+  });
 });
