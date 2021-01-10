@@ -22,8 +22,8 @@ export default class SendForgotPasswordEmailService {
       throw new AppError('Error: User not found', 404);
     }
 
-    await this.usersTokensDao.generate(user._id);
+    const { token } = await this.usersTokensDao.generate(user._id);
 
-    this.mailProvider.sendMail(email, 'Recuperação de senha');
+    await this.mailProvider.sendMail(email, 'Recuperação de senha', `Seu token de acesso: ${token}`);
   }
 }
