@@ -5,6 +5,6 @@ import ResetPasswordController from './controllers/ResetPasswordController';
 const routes = Router();
 
 routes.post('/forgot', ForgotPasswordController.create);
-routes.patch('/reset/:token', ResetPasswordController.create);
+routes.post('/reset', ResetPasswordController.create);
 
 export default routes;
