@@ -1,5 +1,6 @@
 import IMailProvider from "../models/IMailProvider";
 import nodemailer, { Transporter } from 'nodemailer';
+import ISendMailDTO from "../dtos/ISendMailDTO";
 
 export default class MailProviderMock implements IMailProvider {
   private client: Transporter;
@@ -19,12 +20,18 @@ export default class MailProviderMock implements IMailProvider {
     });
   }
 
-  async sendMail(to: string, title: string, body: string): Promise<void> {
+  async sendMail({ to, subject, templateData, from }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
-      from: 'GoBarber <hi@gobarber.com.br>',
-      to,
-      subject: title,
-      text: body
+      from: {
+        address: from?.email || 'hi@gobarber.com.br',
+        name: from?.name || 'GoBarber'
+      },
+      to: {
+        address: to.email,
+        name: to.name
+      },
+      subject,
+      text: templateData.template
     });
     console.log(nodemailer.getTestMessageUrl(message));
 
