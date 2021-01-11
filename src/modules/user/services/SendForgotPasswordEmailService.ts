@@ -24,6 +24,18 @@ export default class SendForgotPasswordEmailService {
 
     const { token } = await this.usersTokensDao.generate(user._id);
 
-    await this.mailProvider.sendMail(email, 'Recuperação de senha', `Seu token de acesso: ${token}`);
+    await this.mailProvider.sendMail({
+      to: {
+        email,
+        name: user.name
+      },
+      subject: 'Recuperação de senha',
+      templateData: {
+        template: 'Seu token de acesso: {{token}}',
+        variables: {
+          token
+        }
+      }
+    });
   }
 }
