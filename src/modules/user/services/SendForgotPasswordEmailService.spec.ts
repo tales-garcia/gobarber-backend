@@ -31,7 +31,7 @@ describe('Send forgot password email', () => {
 
     await service.execute({ email: 'johndoe@example.com' });
 
-    expect(sendMail).toBeCalledWith('johndoe@example.com', 'Recuperação de senha');
+    expect(sendMail).toBeCalled();
   });
   it('should not be able to send a forgot password email to an unregistered user', async () => {
     expect(service.execute({ email: 'johndoe@example.com' })
