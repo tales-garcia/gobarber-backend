@@ -3,6 +3,7 @@ import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IUserTokenDAO from "../DAOs/IUserTokenDAO";
+import path from "path";
 
 @injectable()
 export default class SendForgotPasswordEmailService {
@@ -24,6 +25,8 @@ export default class SendForgotPasswordEmailService {
 
     const { token } = await this.usersTokensDao.generate(user._id);
 
+    const forgotPasswordPath = path.resolve(__dirname, '..', 'views', 'forgot_password.hbs');
+
     await this.mailProvider.sendMail({
       to: {
         email,
@@ -31,9 +34,10 @@ export default class SendForgotPasswordEmailService {
       },
       subject: 'Recuperação de senha',
       templateData: {
-        template: 'Seu token de acesso: {{token}}',
+        file: forgotPasswordPath,
         variables: {
-          token
+          link: `http://localhost:3000/reset_password?token=${token}`,
+          name: user.name
         }
       }
     });
