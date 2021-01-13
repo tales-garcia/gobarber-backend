@@ -3,11 +3,19 @@ import DiskStorageProviderMock from "@shared/container/providers/StorageProvider
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import UpdateAvatarService from "./UpdateAvatarService";
 
-describe('Update user avatar', () => {
-  it('should be able to update a created user avatar', async () => {
-    const userDao = new UserDAOMock();
-    const diskStorageProvider = new DiskStorageProviderMock();
+let service: UpdateAvatarService;
+let userDao: UserDAOMock;
+let diskStorageProvider: DiskStorageProviderMock;
 
+describe('Update user avatar', () => {
+  beforeEach(() => {
+    userDao = new UserDAOMock();
+    diskStorageProvider = new DiskStorageProviderMock();
+
+    service = new UpdateAvatarService(userDao, diskStorageProvider);
+  })
+
+  it('should be able to update a created user avatar', async () => {
     const { _id: userId } = await userDao.create({
       avatar: undefined,
       email: 'johndoe@example.com',
@@ -15,7 +23,7 @@ describe('Update user avatar', () => {
       password: 'johndoe'
     });
 
-    await new UpdateAvatarService(userDao, diskStorageProvider).execute({
+    await service.execute({
       filename: 'profile.png',
       userId
     });
@@ -23,8 +31,7 @@ describe('Update user avatar', () => {
     expect(await userDao.findById(userId)).toHaveProperty('avatar', 'profile.png');
   });
   it('should be able to delete the old avatar', async () => {
-    const userDao = new UserDAOMock();
-    const diskStorageProvider = new DiskStorageProviderMock();
+
 
     const deleteFile = jest.spyOn(diskStorageProvider, 'deleteFile');
 
@@ -35,12 +42,12 @@ describe('Update user avatar', () => {
       password: 'johndoe'
     });
 
-    await new UpdateAvatarService(userDao, diskStorageProvider).execute({
+    await service.execute({
       filename: 'profile.png',
       userId
     });
 
-    await new UpdateAvatarService(userDao, diskStorageProvider).execute({
+    await service.execute({
       filename: 'avatar.png',
       userId
     });
