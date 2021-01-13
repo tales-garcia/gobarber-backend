@@ -5,13 +5,21 @@ import AuthenticateUserService from './AuthenticateUserService';
 import AppError from '@shared/errors/AppError';
 import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 
-const hashProvider = new HashProviderMock();
+let authenticateService: AuthenticateUserService;
+let createService: CreateUserService;
+let hashProvider: HashProviderMock;
+let userDao: UserDAOMock;
 
 describe('Create user', () => {
-  it('should be able to authenticate a created user', async () => {
-    const userDao = new UserDAOMock();
+  beforeEach(() => {
+    userDao = new UserDAOMock();
+    hashProvider = new HashProviderMock();
 
-    await new CreateUserService(userDao, hashProvider).execute(
+    createService = new CreateUserService(userDao, hashProvider);
+    authenticateService = new AuthenticateUserService(userDao, hashProvider);
+  });
+  it('should be able to authenticate a created user', async () => {
+    await createService.execute(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
@@ -20,7 +28,7 @@ describe('Create user', () => {
       }
     );
 
-    const response = await new AuthenticateUserService(userDao, hashProvider).execute({
+    const response = await authenticateService.execute({
       email: 'johndoe@example.com',
       password: '123456'
     });
@@ -29,9 +37,7 @@ describe('Create user', () => {
     expect(response).toHaveProperty('user');
   });
   it('should not be able to authenticate a created user with a wrong password', async () => {
-    const userDao = new UserDAOMock();
-
-    await new CreateUserService(userDao, hashProvider).execute(
+    await createService.execute(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
@@ -40,15 +46,13 @@ describe('Create user', () => {
       }
     );
 
-    expect(new AuthenticateUserService(userDao, hashProvider).execute({
+    expect(authenticateService.execute({
       email: 'johndoe@example.com',
       password: '1234567'
     })).rejects.toBeInstanceOf(AppError);
   });
   it('should not be able to authenticate an unregistered user', async () => {
-    const userDao = new UserDAOMock();
-
-    expect(new AuthenticateUserService(userDao, hashProvider).execute({
+    expect(authenticateService.execute({
       email: 'johndoe@example.com',
       password: '123456'
     })).rejects.toBeInstanceOf(AppError);
