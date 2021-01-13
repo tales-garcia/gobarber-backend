@@ -4,13 +4,19 @@ import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 import CreateUserService from "./CreateUserService";
 
-const hashProvider = new HashProviderMock();
+let hashProvider: HashProviderMock;
+let userDao: UserDAOMock;
+let service: CreateUserService;
 
 describe('Create user', () => {
-  it('should be able to create a new user', async () => {
-    const userDao = new UserDAOMock();
+  beforeEach(() => {
+    userDao = new UserDAOMock();
+    hashProvider = new HashProviderMock();
 
-    const user = await new CreateUserService(userDao, hashProvider).execute(
+    service = new CreateUserService(userDao, hashProvider);
+  });
+  it('should be able to create a new user', async () => {
+    const user = await service.execute(
       {
         name: 'Tales',
         email: 'garcia.tales@gmail.com',
@@ -22,9 +28,6 @@ describe('Create user', () => {
     expect(user).toHaveProperty('_id');
   });
   it('should not be able to create an already registered user', async () => {
-    const userDao = new UserDAOMock();
-    const service = new CreateUserService(userDao, hashProvider);
-
     const user = {
       name: 'John Doe',
       email: 'johndoe@example.com',
