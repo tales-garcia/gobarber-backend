@@ -5,20 +5,26 @@ import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 import CreateUserService from "./CreateUserService";
 import ListUsersService from './ListUsersService';
 
-const hashProvider = new HashProviderMock();
+let listService: ListUsersService;
+let createService: CreateUserService;
+let hashProvider: HashProviderMock;
+let userDao: UserDAOMock;
 
 describe('Create user', () => {
-  it('should be able to list users', async () => {
-    const userDao = new UserDAOMock();
+  beforeEach(() => {
+    hashProvider = new HashProviderMock();
+    userDao = new UserDAOMock();
 
-    const users = await new ListUsersService(userDao).execute();
+    createService = new CreateUserService(userDao, hashProvider);
+    listService = new ListUsersService(userDao);
+  });
+  it('should be able to list users', async () => {
+    const users = await listService.execute();
 
     expect(users).toStrictEqual([]);
   });
   it('should be able to list a created user', async () => {
-    const userDao = new UserDAOMock();
-
-    await new CreateUserService(userDao, hashProvider).execute(
+    await createService.execute(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
@@ -27,7 +33,7 @@ describe('Create user', () => {
       }
     );
 
-    const users = await new ListUsersService(userDao).execute();
+    const users = await listService.execute();
 
     expect(users).toHaveLength(1);
   });
