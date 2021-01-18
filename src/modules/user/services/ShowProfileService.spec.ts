@@ -1,0 +1,34 @@
+import 'reflect-metadata';
+import UserDAOMock from "../DAOs/mocks/UserDAOMock";
+import ShowProfileService from "./ShowProfileService";
+
+let service: ShowProfileService;
+let userDao: UserDAOMock;
+
+describe('Show user profile', () => {
+  beforeEach(() => {
+    userDao = new UserDAOMock();
+
+    service = new ShowProfileService(userDao);
+  });
+
+  it('should be able to show the user profile', async () => {
+
+    const { _id: userId } = await userDao.create({
+      avatar: undefined,
+      email: 'johndoe@example.com',
+      name: 'John Doe',
+      password: 'johndoe'
+    });
+
+    await service.execute({
+      userId
+    });
+
+    const user = await userDao.findById(userId);
+
+    expect(user).toHaveProperty('password', 'johndoe');
+    expect(user).toHaveProperty('email', 'johndoe@example.com');
+    expect(user).toHaveProperty('name', 'John Doe');
+  });
+});
