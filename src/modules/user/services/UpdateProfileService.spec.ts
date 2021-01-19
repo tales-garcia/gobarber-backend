@@ -90,6 +90,13 @@ describe('Update user profile', () => {
       password: 'johndoe'
     });
 
+    await userDao.create({
+      avatar: undefined,
+      email: 'john.doe@example.com',
+      name: 'John Doe',
+      password: 'johndoe'
+    });
+
     await expect(service.execute({
       oldPassword: '1234567',
       updateQuery: {
