@@ -37,7 +37,7 @@ export default class UpdateProfileService {
     }
 
     if (updateQuery.password && oldPassword) {
-      if (!await this.hashProvider.compareHash(oldPassword, updateQuery.password)) {
+      if (!await this.hashProvider.compareHash(oldPassword, user.password)) {
         throw new AppError('Error: Wrong password', 401);
       }
       Object.assign(updateQuery, {
