@@ -1,3 +1,4 @@
+import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import ShowProfileService from "./ShowProfileService";
@@ -30,5 +31,13 @@ describe('Show user profile', () => {
     expect(user).toHaveProperty('password', 'johndoe');
     expect(user).toHaveProperty('email', 'johndoe@example.com');
     expect(user).toHaveProperty('name', 'John Doe');
+  });
+
+  it('should not be able to show the an inexistent user profile', async () => {
+
+    expect(service.execute({
+      userId: 'id'
+    })).rejects.toBeInstanceOf(AppError);
+
   });
 });
