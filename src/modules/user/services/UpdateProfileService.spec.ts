@@ -62,6 +62,13 @@ describe('Update user profile', () => {
       userId
     })).rejects.toBeInstanceOf(AppError);
   });
+  it('should not be able to update an inexistent user', async () => {
+
+    await expect(service.execute({
+      updateQuery: {},
+      userId: 'id'
+    })).rejects.toBeInstanceOf(AppError);
+  });
   it('should not be able to update the user password with a wrong old password', async () => {
 
     const { _id: userId } = await userDao.create({
