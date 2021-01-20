@@ -5,6 +5,8 @@ import authentication from './middlewares/authentication';
 const routes = Router();
 
 routes.use(authentication);
+
 routes.patch('/', ProfileController.update);
+routes.get('/', ProfileController.show);
 
 export default routes;
