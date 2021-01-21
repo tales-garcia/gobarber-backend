@@ -1,4 +1,5 @@
 import IUserDAO from "@modules/user/DAOs/IUserDAO";
+import IFindDTO from "@modules/user/DTOs/IFindDTO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import User from "../entities/user"
 
@@ -18,8 +19,17 @@ export default class UserDAO implements IUserDAO {
       }
     }) as unknown as IUser;
   }
-  async find(filter?: OptionalKeys<IUser>) {
-    const users = await User.find(filter) as unknown as IUser[];
+  async find(data?: IFindDTO) {
+    if(data.excludeId) {
+      return await User.find({
+        ...data?.filter,
+        _id: {
+          $ne: data.excludeId
+        }
+      }) as unknown as IUser[];
+    }
+
+    const users = await User.find(data?.filter) as unknown as IUser[];
 
     users.forEach(user => user.password = undefined);
 
