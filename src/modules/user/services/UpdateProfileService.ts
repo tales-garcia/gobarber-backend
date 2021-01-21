@@ -45,6 +45,11 @@ export default class UpdateProfileService {
       });
     }
 
-    return await this.userDao.findByIdAndUpdate(userId, updateQuery);
+    await this.userDao.findByIdAndUpdate(userId, updateQuery)
+
+    const updatedUser = await this.userDao.findById(userId);
+    updatedUser.password = undefined;
+
+    return updatedUser;
   }
 }
