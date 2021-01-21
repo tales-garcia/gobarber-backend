@@ -22,13 +22,10 @@ describe('Show user profile', () => {
       password: 'johndoe'
     });
 
-    await service.execute({
+    const user = await service.execute({
       userId
     });
 
-    const user = await userDao.findById(userId);
-
-    expect(user).toHaveProperty('password', 'johndoe');
     expect(user).toHaveProperty('email', 'johndoe@example.com');
     expect(user).toHaveProperty('name', 'John Doe');
   });

@@ -40,7 +40,6 @@ describe('Update user profile', () => {
     const updatedUser = await userDao.findById(userId);
 
     expect(generateHash).toBeCalledWith('123456');
-    expect(updatedUser).toHaveProperty('password', '123456');
     expect(updatedUser).toHaveProperty('email', 'john.doe@example.com');
     expect(updatedUser).toHaveProperty('name', 'Johndoe');
   });
