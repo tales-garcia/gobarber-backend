@@ -1,4 +1,5 @@
 import IUserDAO from "@modules/user/DAOs/IUserDAO";
+import IFindDTO from "@modules/user/DTOs/IFindDTO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import { uuid } from "uuidv4";
 
@@ -39,14 +40,21 @@ export default class UserDAOMock implements IUserDAO {
 
     return updatedUser;
   }
-  async find(filter?: OptionalKeys<IUser>) {
-    if(!filter) {
-      return this.users;
+  async find(data?: IFindDTO) {
+    let users = this.users;
+    if(!data) {
+      return users;
+    }
+    if(data.excludeId) {
+      users = users.filter(user => user._id !== data.excludeId);
+    }
+    if(!data.filter) {
+      return users;
     }
 
-    const keys = Object.keys(filter);
-    const filteredUsers = this.users.filter(user => {
-      const results = keys.map(key => user[key] === filter[key]);
+    const keys = Object.keys(data.filter);
+    const filteredUsers = users.filter(user => {
+      const results = keys.map(key => user[key] === data.filter[key]);
 
       return !results.some(result => result);
     });
