@@ -20,6 +20,8 @@ export default class showProfileService {
       throw new AppError('Error: User not found', 404);
     }
 
+    user.password = undefined;
+
     return user;
   }
 }
