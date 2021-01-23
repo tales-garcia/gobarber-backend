@@ -3,7 +3,7 @@ import { injectable, inject } from 'tsyringe';
 import IAppointmentDAO from '../DAOs/IAppointmentDAO';
 
 interface IRequest {
-  provider_id: string;
+  providerId: string;
   month: number;
   year: number;
 }
@@ -21,13 +21,15 @@ class ListProviderMonthAvailabilityService {
   ) {}
 
   public async execute({
-    provider_id,
+    providerId,
     year,
     month,
   }: IRequest): Promise<IResponse> {
-    const appointments = await this.appointmentDao.find(
-
-    );
+    const appointments = await this.appointmentDao.findAllInMonthFromProvider({
+      providerId,
+      year,
+      month
+    });
 
     console.log(appointments);
 
