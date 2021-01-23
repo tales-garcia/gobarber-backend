@@ -1,5 +1,6 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
+import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllInMonthFromProviderDTO";
 import Appointment from "../entities/appointment"
 
 interface IAppointment extends Assign<IAppointmentDTO, "_id", string> {}
@@ -13,6 +14,15 @@ export default class AppointmentDAO implements IAppointmentDAO {
   }
   async find(filter?: OptionalKeys<IAppointment>) {
     return await Appointment.find(filter) as unknown as IAppointment[];
+  }
+  async findAllInMonthFromProvider({ year, month, providerId }: IFindAllInMonthFromProviderDTO) {
+    return this.find({
+      providerId,
+      date: ({
+        $gte: new Date(year, month, 0),
+        $lte: new Date(year, month + 1, 0)
+      }) as any
+    });
   }
   async create(appointment: IAppointment) {
     return await Appointment.create(appointment) as unknown as IAppointment;
