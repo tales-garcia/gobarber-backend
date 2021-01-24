@@ -1,5 +1,6 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
+import IFindAllInDayFromProviderDTO from "@modules/appointment/DTOs/IFindAllInDayFromProviderDTO";
 import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllInMonthFromProviderDTO";
 import Appointment from "../entities/appointment"
 
@@ -21,6 +22,15 @@ export default class AppointmentDAO implements IAppointmentDAO {
       date: ({
         $gte: new Date(year, month, 0),
         $lte: new Date(year, month + 1, 0)
+      }) as any
+    });
+  }
+  async findAllInDayFromProvider({ year, day, month, providerId }: IFindAllInDayFromProviderDTO) {
+    return this.find({
+      providerId,
+      date: ({
+        $gte: new Date(year, month, day),
+        $lte: new Date(year, month, day + 1)
       }) as any
     });
   }
