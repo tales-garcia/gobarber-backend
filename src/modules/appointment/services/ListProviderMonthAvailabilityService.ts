@@ -1,3 +1,4 @@
+import { getDate, getDaysInMonth } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import IAppointmentDAO from '../DAOs/IAppointmentDAO';
@@ -31,9 +32,24 @@ class ListProviderMonthAvailabilityService {
       month
     });
 
-    console.log(appointments);
+    const daysInMonth = Array.from({
+      length: getDaysInMonth(new Date(year, month - 1))
+    },
+      (_, index) => index + 1
+    );
 
-    return [{ day: 1, available: false }];
+    const availability = daysInMonth.map(day => {
+      const appointmentsInDay = appointments.filter(appointment => getDate(appointment.date) === day)
+
+      return {
+        day,
+        available: appointmentsInDay.length < 10
+      };
+    });
+
+    console.log(availability);
+
+    return availability;
   }
 }
 
