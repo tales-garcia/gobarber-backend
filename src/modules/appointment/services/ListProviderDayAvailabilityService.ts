@@ -1,4 +1,4 @@
-import { getHours } from 'date-fns';
+import { getHours, isAfter } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
 import IAppointmentDAO from '../DAOs/IAppointmentDAO';
@@ -41,14 +41,16 @@ class ListProviderDayAvailabilityService {
       (_, index) => index + 8
     );
 
+    const currentDate = new Date(Date.now());
+
     const availability = hoursInDay.map(hour => {
+      const compareDate = new Date(year, month - 1, day, hour);
+
       return {
         hour,
-        available: !appointments.some(appointment => getHours(appointment.date) === hour)
+        available: !(appointments.some(appointment => getHours(appointment.date) === hour) || isAfter(currentDate, compareDate))
       };
     });
-
-    console.log(availability);
 
     return availability;
   }
