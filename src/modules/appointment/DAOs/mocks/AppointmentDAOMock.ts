@@ -1,7 +1,8 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
+import IFindAllInDayFromProviderDTO from "@modules/appointment/DTOs/IFindAllInDayFromProviderDTO";
 import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllInMonthFromProviderDTO";
-import { getMonth, getYear } from "date-fns";
+import { getMonth, getYear, getDate } from "date-fns";
 import { uuid } from "uuidv4";
 
 interface Appointment extends Assign<IAppointmentDTO, "_id", string> {}
@@ -25,6 +26,15 @@ export default class AppointmentDAOMock implements IAppointmentDAO {
         appointment.providerId === providerId &&
         getYear(appointment.date) === year &&
         getMonth(appointment.date) + 1 === month
+      );
+  }
+  async findAllInDayFromProvider({ year, month, providerId, day }: IFindAllInDayFromProviderDTO) {
+    return this.appointments
+      .filter(appointment =>
+        appointment.providerId === providerId &&
+        getYear(appointment.date) === year &&
+        getMonth(appointment.date) + 1 === month &&
+        getDate(appointment.date) === day
       );
   }
   async find(filter?: OptionalKeys<Appointment>) {
