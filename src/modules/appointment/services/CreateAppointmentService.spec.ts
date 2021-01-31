@@ -10,7 +10,8 @@ describe('Create appointment', () => {
     const appointment = await new CreateAppointmentService(appointmentDao).execute(
       {
         date: Date(),
-        providerId: 'ffff'
+        providerId: 'ffff',
+        clientId: 'id'
       }
     );
 
@@ -25,14 +26,16 @@ describe('Create appointment', () => {
     await service.execute(
       {
         date: date,
-        providerId: 'ffff'
+        providerId: 'ffff',
+        clientId: 'id'
       }
     );
 
     expect(service.execute(
       {
         date: date,
-        providerId: 'ffff'
+        providerId: 'ffff',
+        clientId: 'id'
       }
     )).rejects.toBeInstanceOf(AppError);
 

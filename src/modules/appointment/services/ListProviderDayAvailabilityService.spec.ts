@@ -17,11 +17,13 @@ describe('List the day availability', () => {
 
     await appointmentDao.create({
       providerId: 'user',
+      clientId: 'client',
       date: new Date(2021, 4, 20, 14, 0, 0),
     });
 
     await appointmentDao.create({
       providerId: 'user',
+      clientId: 'client',
       date: new Date(2021, 4, 20, 15, 0, 0),
     });
 
