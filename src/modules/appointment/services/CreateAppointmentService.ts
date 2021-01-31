@@ -1,7 +1,7 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import AppError from "@shared/errors/AppError";
 import { isBefore, parseISO, startOfHour } from "date-fns";
-import { getHours } from "date-fns/esm";
+import { getHours } from "date-fns";
 import { inject, injectable } from "tsyringe";
 
 interface Request {
