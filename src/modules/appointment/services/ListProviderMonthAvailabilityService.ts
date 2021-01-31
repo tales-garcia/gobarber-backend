@@ -29,7 +29,7 @@ class ListProviderMonthAvailabilityService {
     const appointments = await this.appointmentDao.findAllInMonthFromProvider({
       providerId,
       year,
-      month
+      month: month - 1
     });
 
     const daysInMonth = Array.from({
