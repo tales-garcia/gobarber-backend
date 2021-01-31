@@ -6,11 +6,13 @@ import ListAppointmentsService from "@modules/appointment/services/ListAppointme
 
 export default {
   async create(req: Request, res: Response) {
+    const clientId = req.userId;
     const { providerId, date } = req.body;
 
     try {
       const appointment = await container.resolve(CreateAppointmentService).execute({
         providerId,
+        clientId,
         date
       });
 

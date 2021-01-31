@@ -5,6 +5,7 @@ import { inject, injectable } from "tsyringe";
 
 interface Request {
   date: string;
+  clientId: string;
   providerId: string;
 }
 
@@ -15,7 +16,7 @@ export default class CreateAppointmentService {
     private appointmentDao: IAppointmentDAO
   ) { }
 
-  public async execute({ providerId, date }: Request) {
+  public async execute({ providerId, date, clientId }: Request) {
     const parsedDate = startOfHour(parseISO(date));
 
     const appointmentInSameDate = await this.appointmentDao.findByDate(parsedDate);
@@ -26,6 +27,7 @@ export default class CreateAppointmentService {
 
     const appointment = await this.appointmentDao.create({
       providerId,
+      clientId,
       date: parsedDate
     });
 
