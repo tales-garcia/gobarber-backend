@@ -28,13 +28,13 @@ describe('List the day availability', () => {
     });
 
     jest.spyOn(Date, 'now').mockImplementation(() => {
-      return new Date(2021, 4, 20, 11).getTime();
+      return new Date(2021, 5, 20, 11).getTime();
     });
 
     const availability = await service.execute({
       providerId: 'user',
       year: 2021,
-      month: 5,
+      month: 6,
       day: 20
     });
 
