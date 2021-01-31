@@ -1,6 +1,7 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
+import INotificationDAO from "@modules/notifications/DAOs/INotificationDAO";
 import AppError from "@shared/errors/AppError";
-import { isBefore, parseISO, startOfHour } from "date-fns";
+import { format, isBefore, parseISO, startOfHour } from "date-fns";
 import { getHours } from "date-fns";
 import { inject, injectable } from "tsyringe";
 
@@ -14,7 +15,9 @@ interface Request {
 export default class CreateAppointmentService {
   constructor(
     @inject('AppointmentDAO')
-    private appointmentDao: IAppointmentDAO
+    private appointmentDao: IAppointmentDAO,
+    @inject('NotificationsDAO')
+    private notificationsDao: INotificationDAO
   ) { }
 
   public async execute({ providerId, date, clientId }: Request) {
@@ -42,6 +45,13 @@ export default class CreateAppointmentService {
       providerId,
       clientId,
       date: parsedDate
+    });
+
+    const formattedDate = format(parsedDate, "dd/MM 'às' HH:mm")
+
+    await this.notificationsDao.create({
+      recipientId: providerId,
+      content: `Agendamento marcado para ${formattedDate}`
     });
 
     return appointment;
