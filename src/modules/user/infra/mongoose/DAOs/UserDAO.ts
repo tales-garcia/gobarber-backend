@@ -20,7 +20,7 @@ export default class UserDAO implements IUserDAO {
     }) as unknown as IUser;
   }
   async find(data?: IFindDTO) {
-    if(data.excludeId) {
+    if(data && data.excludeId) {
       return await User.find({
         ...data?.filter,
         _id: {
