@@ -1,7 +1,7 @@
 import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IFindDTO from "@modules/user/DTOs/IFindDTO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
-import User from "../entities/user"
+import User from "../schemas/user"
 
 interface IUser extends Assign<IUserDtO, "_id", string> {}
 

@@ -2,7 +2,7 @@ import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
 import IFindAllInDayFromProviderDTO from "@modules/appointment/DTOs/IFindAllInDayFromProviderDTO";
 import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllInMonthFromProviderDTO";
-import Appointment from "../entities/appointment"
+import Appointment from "../schemas/appointment"
 
 interface IAppointment extends Assign<IAppointmentDTO, "_id", string> {}
 

@@ -1,7 +1,7 @@
 import IUserTokenDAO from "@modules/user/DAOs/IUserTokenDAO";
 import IUserTokenDtO from "@modules/user/DTOs/IUserTokenDTO";
 import { uuid } from "uuidv4";
-import UserToken from "../entities/userToken"
+import UserToken from "../schemas/userToken"
 
 type TUserToken = Assign<Assign<IUserTokenDtO, "_id" | "token", string>, "createdAt" | "updatedAt", Date>;
 
