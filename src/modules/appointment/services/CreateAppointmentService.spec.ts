@@ -2,19 +2,22 @@ import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
 import AppointmentDAOMock from "../DAOs/mocks/AppointmentDAOMock";
 import CreateAppointmentService from "./CreateAppointmentService";
+import NotificationDAOMock from '@modules/notifications/DAOs/mocks/NotificationDAOMock';
 
 let service: CreateAppointmentService;
 let appointmentDao: AppointmentDAOMock;
+let notificationsDao: NotificationDAOMock;
 
 describe('Create appointment', () => {
   beforeEach(() => {
     appointmentDao = new AppointmentDAOMock();
+    notificationsDao = new NotificationDAOMock()
 
-    service = new CreateAppointmentService(appointmentDao);
+    service = new CreateAppointmentService(appointmentDao, notificationsDao);
   })
 
   it('should be able to create a new appointment', async () => {
-    const appointment = await new CreateAppointmentService(appointmentDao).execute(
+    const appointment = await service.execute(
       {
         date: Date(),
         providerId: 'ffff',
