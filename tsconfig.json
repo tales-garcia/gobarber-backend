@@ -4,6 +4,7 @@
     "module": "commonjs",
     "outDir": "./tmp/javascript",
     "rootDir": "./src",
+    "allowJs": true,
 
     "baseUrl": "./",
     "paths": {
