@@ -6,6 +6,7 @@ import routes from './routes/index.routes';
 import cors from 'cors';
 import { uploadsFolder } from '@config/upload';
 import AppError from '@shared/errors/AppError';
+import { errors } from 'celebrate';
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use('/images', express.static(uploadsFolder));
 app.use(routes);
+
+app.use(errors());
 
 app.use((e: Error, req: Request, res: Response, _: NextFunction) => {
   if (e instanceof AppError) {
