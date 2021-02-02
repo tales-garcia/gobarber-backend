@@ -1,6 +1,6 @@
 import 'reflect-metadata';
-import '@shared/container';
 import 'dotenv/config';
+import '@shared/container';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 import routes from './routes/index.routes';
