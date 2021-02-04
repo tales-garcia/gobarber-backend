@@ -1,18 +1,45 @@
-import multer from 'multer';
+import multer, { StorageEngine } from 'multer';
 import path from 'path';
 import { uuid } from 'uuidv4';
+
+interface IUploadConfig {
+  driver: 'disk' | 's3';
+
+  multer: {
+    storage: StorageEngine;
+  };
+
+  config: {
+    disk: {};
+
+    aws: {
+      bucket: string;
+    };
+  };
+}
 
 export const tmpFolder = process.env.NODE_ENV === 'prod' ? path.resolve(__dirname, 'tmp') : path.resolve(__dirname, '..', '..', 'tmp');
 
 export const uploadsFolder = process.env.NODE_ENV === 'prod' ? path.resolve(__dirname, 'tmp', 'uploads') : path.resolve(__dirname, '..', '..', 'tmp', 'uploads');
 
 export default {
-  storage: multer.diskStorage({
-    destination: tmpFolder,
-    filename: (req, file, callback) => {
-      const filename = `${req.userId}-${uuid()}-${Date.now().toString()}-${file.originalname}`;
+  driver: process.env.STORAGE_DRIVER || 'disk',
 
-      callback(null, filename);
+  multer: {
+    storage: multer.diskStorage({
+      destination: tmpFolder,
+      filename: (req, file, callback) => {
+        const filename = `${req.userId}-${uuid()}-${Date.now().toString()}-${file.originalname}`;
+
+        callback(null, filename);
+      }
+    })
+  },
+
+  config: {
+    disk: {},
+    aws: {
+      bucket: 'gobarber'
     }
-  })
-}
+  }
+} as IUploadConfig;
