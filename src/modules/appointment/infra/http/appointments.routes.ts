@@ -10,8 +10,8 @@ routes.use(authentication);
 
 routes.post('/', celebrate({
   [Segments.BODY]: {
-    providerId: Joi.string().uuid().required(),
-    date: Joi.date().required()
+    providerId: Joi.string().required(),
+    date: Joi.string().isoDate().required()
   }
 }), AppointmentController.create);
 routes.get('/', AppointmentController.index);
