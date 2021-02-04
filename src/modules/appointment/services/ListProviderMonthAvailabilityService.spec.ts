@@ -95,7 +95,7 @@ describe('List the month availability', () => {
     const availability = await service.execute({
       providerId: 'user',
       year: 2021,
-      month: 5
+      month: 6
     });
 
     expect(availability).toEqual(
