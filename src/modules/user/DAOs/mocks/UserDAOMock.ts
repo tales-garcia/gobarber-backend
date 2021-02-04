@@ -2,6 +2,7 @@ import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IFindDTO from "@modules/user/DTOs/IFindDTO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import { uuid } from "uuidv4";
+import uploadConfig from '@config/upload';
 
 interface IUser extends Assign<IUserDtO, "_id", string> {}
 
@@ -9,7 +10,7 @@ export default class UserDAOMock implements IUserDAO {
   private users: IUser[] = [];
 
   async findOne(filter: OptionalKeys<IUser>) {
-    return this.users.find(user => {
+    return (await this.find()).find(user => {
       const results = Object.keys(filter).map(key => user[key] === filter[key]);
 
       return !results.some(result => !result);
@@ -30,18 +31,12 @@ export default class UserDAOMock implements IUserDAO {
       updatedUser[key] = query[key];
     })
 
-    this.users.forEach(user => {
-      if(user._id === _id) {
-        return updatedUser;
-      }
-
-      return user;
-    });
+    this.users[this.users.findIndex(user => user._id === _id)] = this.getUserAvatarURL(updatedUser);
 
     return updatedUser;
   }
   async find(data?: IFindDTO) {
-    let users = this.users;
+    let users = this.users.map(this.getUserAvatarURL);
     if(!data) {
       return users;
     }
@@ -72,5 +67,23 @@ export default class UserDAOMock implements IUserDAO {
     this.users.push(createdUser);
 
     return { ...createdUser, password: undefined };
+  }
+  getUserAvatarURL(user: IUser) {
+    if (!user.avatar) return user;
+
+    let avatarUrl: string;
+
+    switch (uploadConfig.driver) {
+      case 'disk': {
+        avatarUrl = `${process.env.BACKEND_URL}/images/${user.avatar}`;
+        break;
+      }
+      case 's3': {
+        avatarUrl = `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${user.avatar}`;
+        break;
+      }
+    }
+
+    return { ...user, avatarUrl };
   }
 }
