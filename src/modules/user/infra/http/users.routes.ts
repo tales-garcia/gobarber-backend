@@ -7,7 +7,7 @@ import { celebrate, Joi, Segments } from 'celebrate';
 
 const routes = Router();
 
-const upload = multer(uploadConfig);
+const upload = multer(uploadConfig.multer);
 
 routes.post('/', celebrate({
   [Segments.BODY]: {
