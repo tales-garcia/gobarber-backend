@@ -16,6 +16,12 @@ services:
       - "27017:27017"
     networks:
       - gobarber_backend
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - gobarber_backend
 
 networks:
   gobarber_backend:
