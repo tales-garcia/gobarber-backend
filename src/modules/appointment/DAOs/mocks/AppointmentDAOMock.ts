@@ -14,14 +14,14 @@ export default class AppointmentDAOMock implements IAppointmentDAO {
     return this.findOne({ date });
   }
   async findOne(filter: OptionalKeys<Appointment>) {
-    return this.appointments.find(appointment => {
+    return (await this.find()).find(appointment => {
       const results = Object.keys(filter).map(key => appointment[key] === filter[key]);
 
       return results.some(result => !result);
     });
   }
   async findAllInMonthFromProvider({ year, month, providerId }: IFindAllInMonthFromProviderDTO) {
-    return this.appointments
+    return (await this.find())
       .filter(appointment =>
         appointment.providerId === providerId &&
         getYear(appointment.date) === year &&
@@ -29,7 +29,7 @@ export default class AppointmentDAOMock implements IAppointmentDAO {
       );
   }
   async findAllInDayFromProvider({ year, month, providerId, day }: IFindAllInDayFromProviderDTO) {
-    return this.appointments
+    return (await this.find())
       .filter(appointment =>
         appointment.providerId === providerId &&
         getYear(appointment.date) === year &&
