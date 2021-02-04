@@ -19,7 +19,7 @@ describe('Create appointment', () => {
   it('should be able to create a new appointment', async () => {
     const appointment = await service.execute(
       {
-        date: Date(),
+        date: new Date(2023, 0, 0, 13).toISOString(),
         providerId: 'ffff',
         clientId: 'id'
       }
@@ -29,7 +29,7 @@ describe('Create appointment', () => {
     expect(appointment.providerId).toBe('ffff');
   });
   it('should not be able to create an already booked appointment', async () => {
-    const date = Date();
+    const date = new Date(2023, 0, 0, 13).toISOString();
 
     await service.execute(
       {
