@@ -2,15 +2,16 @@ import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IFindDTO from "@modules/user/DTOs/IFindDTO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
 import User from "../schemas/user"
+import uploadConfig from '@config/upload';
 
 interface IUser extends Assign<IUserDtO, "_id", string> {}
 
 export default class UserDAO implements IUserDAO {
   async findByEmail(email: string) {
-    return await User.findOne({ email }) as unknown as IUser;
+    return this.getUserAvatarURL(await User.findOne({ email }) as unknown as IUser);
   }
   async findById(_id: string) {
-    return await User.findById(_id) as unknown as IUser;
+    return this.getUserAvatarURL(await User.findById(_id) as unknown as IUser);
   }
   async findByIdAndUpdate(_id: string, query: OptionalKeys<IUser>) {
     return await User.findByIdAndUpdate(_id, {
@@ -21,19 +22,19 @@ export default class UserDAO implements IUserDAO {
   }
   async find(data?: IFindDTO) {
     if(data && data.excludeId) {
-      return await User.find({
+      return (await User.find({
         ...data?.filter,
         _id: {
           $ne: data.excludeId
         }
-      }) as unknown as IUser[];
+      }) as unknown as IUser[]).map(this.getUserAvatarURL);
     }
 
     const users = await User.find(data?.filter) as unknown as IUser[];
 
     users.forEach(user => user.password = undefined);
 
-    return users;
+    return users.map(this.getUserAvatarURL);
   }
   async create(user: IUserDtO) {
     const createdUser = await User.create(user as IUser) as unknown as IUserDtO;
@@ -41,5 +42,36 @@ export default class UserDAO implements IUserDAO {
     createdUser.password = undefined;
 
     return createdUser;
+  }
+  getUserAvatarURL(user: IUser) {
+    if (!user.avatar) return user;
+
+    let avatarUrl: string;
+
+    switch (uploadConfig.driver) {
+      case 'disk': {
+        avatarUrl = `${process.env.BACKEND_URL}/images/${user.avatar}`;
+        break;
+      }
+      case 's3': {
+        avatarUrl = `https://${uploadConfig.config.aws.bucket}.s3.amazonaws.com/${user.avatar}`;
+        break;
+      }
+    }
+
+    const realUser = {};
+
+    Object.assign(realUser, {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      password: user.password,
+      avatarUrl,
+      createdAt: (user as any).createdAt,
+      updatedAt: (user as any).updatedAt
+    });
+
+    return realUser as IUser;
   }
 }
