@@ -1,5 +1,6 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
 import INotificationDAO from "@modules/notifications/DAOs/INotificationDAO";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 import AppError from "@shared/errors/AppError";
 import { format, isBefore, parseISO, startOfHour } from "date-fns";
 import { getHours } from "date-fns";
@@ -17,7 +18,9 @@ export default class CreateAppointmentService {
     @inject('AppointmentDAO')
     private appointmentDao: IAppointmentDAO,
     @inject('NotificationsDAO')
-    private notificationsDao: INotificationDAO
+    private notificationsDao: INotificationDAO,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
   ) { }
 
   public async execute({ providerId, date, clientId }: Request) {
@@ -53,6 +56,8 @@ export default class CreateAppointmentService {
       recipientId: providerId,
       content: `Agendamento marcado para ${formattedDate}`
     });
+
+    await this.cacheProvider.invalidate('provider');
 
     return appointment;
   }
