@@ -31,7 +31,7 @@ class ListProviderDayAvailabilityService {
     month,
     day
   }: IRequest): Promise<IResponse> {
-    const cache = await this.cacheProvider.recover(`provider-day-availability-${providerId}-${year}-${month}-${day}`);
+    const cache = await this.cacheProvider.recover(`provider-appointment-day-availability-${providerId}-${year}-${month}-${day}`);
 
     if(cache) return cache;
 
@@ -59,7 +59,7 @@ class ListProviderDayAvailabilityService {
       };
     });
 
-    await this.cacheProvider.save(`provider-day-availability-${providerId}-${year}-${month}-${day}`, availability);
+    await this.cacheProvider.save(`provider-appointment-day-availability-${providerId}-${year}-${month}-${day}`, availability);
     return availability;
   }
 }
