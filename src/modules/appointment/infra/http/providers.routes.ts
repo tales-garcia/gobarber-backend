@@ -12,12 +12,12 @@ routes.use(authentication);
 routes.get('/', ProvidersController.index);
 routes.get('/:id/availability/month', celebrate({
   [Segments.PARAMS]: {
-    id: Joi.string().uuid().required()
+    id: Joi.string().required()
   }
 }), MonthAvailabilityController.index);
 routes.get('/:id/availability/day', celebrate({
   [Segments.PARAMS]: {
-    id: Joi.string().uuid().required()
+    id: Joi.string().required()
   }
 }), DayAvailabilityController.index);
 
