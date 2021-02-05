@@ -1,3 +1,4 @@
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import { getDate, getDaysInMonth } from 'date-fns';
 import { injectable, inject } from 'tsyringe';
 
@@ -19,6 +20,8 @@ class ListProviderMonthAvailabilityService {
   constructor(
     @inject('AppointmentDAO')
     private appointmentDao: IAppointmentDAO,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({
@@ -26,6 +29,10 @@ class ListProviderMonthAvailabilityService {
     year,
     month,
   }: IRequest): Promise<IResponse> {
+    const cache = await this.cacheProvider.recover(`provider-month-availability-${providerId}-${year}-${month}`);
+
+    if (cache) return cache;
+
     const appointments = await this.appointmentDao.findAllInMonthFromProvider({
       providerId,
       year,
@@ -46,6 +53,8 @@ class ListProviderMonthAvailabilityService {
         available: appointmentsInDay.length < 10
       };
     });
+
+    await this.cacheProvider.save(`provider-month-availability-${providerId}-${year}-${month}`, availability);
 
     return availability;
   }
