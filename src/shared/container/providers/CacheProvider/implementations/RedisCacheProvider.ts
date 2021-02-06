@@ -15,7 +15,7 @@ export default class RedisCacheProvider implements ICacheProvider {
     await this.client.set(key, JSON.stringify(value));
   }
 
-  public async recover(key: string): Promise<string | null> {
+  public async recover(key: string) {
     const data = await this.client.get(key);
 
     return JSON.parse(data);
