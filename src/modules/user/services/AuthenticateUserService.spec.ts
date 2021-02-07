@@ -1,12 +1,10 @@
 import 'reflect-metadata';
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
-import CreateUserService from "./CreateUserService";
 import AuthenticateUserService from './AuthenticateUserService';
 import AppError from '@shared/errors/AppError';
 import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 
 let authenticateService: AuthenticateUserService;
-let createService: CreateUserService;
 let hashProvider: HashProviderMock;
 let userDao: UserDAOMock;
 
@@ -15,11 +13,10 @@ describe('Create user', () => {
     userDao = new UserDAOMock();
     hashProvider = new HashProviderMock();
 
-    createService = new CreateUserService(userDao, hashProvider);
     authenticateService = new AuthenticateUserService(userDao, hashProvider);
   });
   it('should be able to authenticate a created user', async () => {
-    await createService.execute(
+    await userDao.create(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
@@ -37,7 +34,7 @@ describe('Create user', () => {
     expect(response).toHaveProperty('user');
   });
   it('should not be able to authenticate a created user with a wrong password', async () => {
-    await createService.execute(
+    await userDao.create(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
