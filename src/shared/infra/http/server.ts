@@ -8,9 +8,11 @@ import cors from 'cors';
 import { uploadsFolder } from '@config/upload';
 import AppError from '@shared/errors/AppError';
 import { errors } from 'celebrate';
+import rateLimiter from './routes/middlewares/rateLimiter';
 
 const app = express();
 
+app.use(rateLimiter);
 app.use(cors());
 app.use(express.json());
 app.use('/images', express.static(uploadsFolder));
