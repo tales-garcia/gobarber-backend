@@ -36,7 +36,7 @@ export default class CreateAppointmentService {
       throw new AppError('Error: Invalid ProviderId', 403);
     }
 
-    if (getHours(parsedDate) < 8 || getHours(parsedDate) > 17) {
+    if ((getHours(parsedDate) + 2) < 8 || (getHours(parsedDate) + 2) > 17) {
       throw new AppError('Error: Invalid hour', 406);
     }
 
