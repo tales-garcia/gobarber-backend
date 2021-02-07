@@ -1,3 +1,4 @@
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
@@ -16,7 +17,9 @@ export default class UpdateProfileService {
     @inject('UserDAO')
     private userDao: IUserDAO,
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
   ) { }
 
   public async execute({ userId, updateQuery, oldPassword }: Request) {
@@ -49,6 +52,9 @@ export default class UpdateProfileService {
 
     const updatedUser = await this.userDao.findById(userId);
     updatedUser.password = undefined;
+
+    await this.cacheProvider.invalidateMatching(updatedUser._id);
+    await this.cacheProvider.invalidate('list-users');
 
     return updatedUser;
   }

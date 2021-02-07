@@ -1,3 +1,4 @@
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
@@ -10,7 +11,9 @@ export default class CreateUserService {
     @inject('UserDAO')
     private userDao: IUserDAO,
     @inject('HashProvider')
-    private hashProvider: IHashProvider
+    private hashProvider: IHashProvider,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
   ) { }
 
   public async execute({ email, name, password }: IUserDtO) {
@@ -28,6 +31,9 @@ export default class CreateUserService {
       password: hashedPassword,
       avatar: undefined
     });
+
+    await this.cacheProvider.invalidate('list-users');
+    await this.cacheProvider.invalidateMatching(user._id);
 
     return user;
   }

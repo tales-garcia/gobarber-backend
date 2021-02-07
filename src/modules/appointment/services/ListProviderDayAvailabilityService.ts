@@ -31,7 +31,9 @@ class ListProviderDayAvailabilityService {
     month,
     day
   }: IRequest): Promise<IResponse> {
-    const cache = await this.cacheProvider.recover(`provider-appointment-day-availability-${providerId}-${year}-${month}-${day}`);
+    console.log(`provider-appointment-day-availability-${providerId}-${year}-${month-1}-${day}`);
+
+    const cache = await this.cacheProvider.recover(`provider-appointment-day-availability-${providerId}-${year}-${month-1}-${day}`);
 
     if(cache) return cache;
 

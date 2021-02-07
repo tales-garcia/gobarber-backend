@@ -20,18 +20,18 @@ export default class ListProviderAppointmentsService {
   ) { }
 
   public async execute({ providerId, year, month, day }: Request): Promise<Assign<IAppointmentDTO, "_id", string>[]> {
-    const cache = await this.cacheProvider.recover(`provider-appointments:${providerId}`);
+    const cache = await this.cacheProvider.recover(`provider-appointments:${providerId}-${year}-${month}-${day}`);
 
     if (cache) return cache;
 
     const appointments = await this.appointmentDao.findAllInDayFromProvider({
       providerId,
       day,
-      month,
+      month: month,
       year
     });
 
-    await this.cacheProvider.save(`provider-appointments:${providerId}`, appointments);
+    await this.cacheProvider.save(`provider-appointments:${providerId}-${year}-${month}-${day}`, appointments);
 
     return appointments;
   }

@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import IUserDAO from "../DAOs/IUserDAO";
 import IStorageProvider from "@shared/container/providers/StorageProvider/models/IStorageProvider";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 
 interface Request {
   filename: string;
@@ -13,7 +14,9 @@ export default class UpdateAvatarService {
     @inject('UserDAO')
     private userDao: IUserDAO,
     @inject('StorageProvider')
-    private storageProvider: IStorageProvider
+    private storageProvider: IStorageProvider,
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider
   ) { }
 
   public async execute({ userId, filename }: Request) {
@@ -23,6 +26,9 @@ export default class UpdateAvatarService {
     }
 
     await this.storageProvider.saveFile(filename);
+
+    await this.cacheProvider.invalidateMatching(user._id);
+    await this.cacheProvider.invalidate('list-users');
 
     await this.userDao.findByIdAndUpdate(userId, {
         avatar: filename
