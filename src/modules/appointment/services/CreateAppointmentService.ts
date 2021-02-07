@@ -57,7 +57,7 @@ export default class CreateAppointmentService {
       content: `Agendamento marcado para ${formattedDate}`
     });
 
-    await this.cacheProvider.invalidate(providerId);
+    await this.cacheProvider.invalidate(`provider-appointments:${providerId}-${parsedDate.getFullYear()}-${parsedDate.getMonth()}-${parsedDate.getDay()}`);
     await this.cacheProvider.invalidate('list-all-appointments');
 
     return appointment;
