@@ -40,7 +40,7 @@ export default class CreateAppointmentService {
       throw new AppError('Error: Invalid hour', 406);
     }
 
-    if (appointmentInSameDate) {
+    if (appointmentInSameDate && appointmentInSameDate.providerId === providerId) {
       throw new AppError('Error: Appointment already booked', 400);
     }
 
