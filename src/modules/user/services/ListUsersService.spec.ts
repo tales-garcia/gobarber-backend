@@ -1,22 +1,21 @@
-import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
-import CreateUserService from "./CreateUserService";
 import ListUsersService from './ListUsersService';
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 
 let listService: ListUsersService;
-let createService: CreateUserService;
 let hashProvider: HashProviderMock;
 let userDao: UserDAOMock;
+let cacheProvider: CacheProviderMock;
 
 describe('Create user', () => {
   beforeEach(() => {
     hashProvider = new HashProviderMock();
     userDao = new UserDAOMock();
+    cacheProvider = new CacheProviderMock();
 
-    createService = new CreateUserService(userDao, hashProvider);
-    listService = new ListUsersService(userDao);
+    listService = new ListUsersService(userDao, cacheProvider);
   });
   it('should be able to list users', async () => {
     const users = await listService.execute();
@@ -24,7 +23,7 @@ describe('Create user', () => {
     expect(users).toStrictEqual([]);
   });
   it('should be able to list a created user', async () => {
-    await createService.execute(
+    await userDao.create(
       {
         name: 'John Doe',
         email: 'johndoe@example.com',
