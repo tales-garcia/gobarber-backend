@@ -45,7 +45,7 @@ export default class UserDAO implements IUserDAO {
     return users.map(this.getUserAvatarURL);
   }
   async create(user: IUserDtO) {
-    const createdUser = await User.create(user as IUser) as unknown as IUserDtO;
+    const createdUser = await User.create(user as IUser) as unknown as IUser;
 
     createdUser.password = undefined;
 
