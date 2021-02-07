@@ -8,10 +8,18 @@ interface IUser extends Assign<IUserDtO, "_id", string> {}
 
 export default class UserDAO implements IUserDAO {
   async findByEmail(email: string) {
-    return this.getUserAvatarURL(await User.findOne({ email }) as unknown as IUser);
+    const user = await User.findOne({ email }) as unknown as IUser;
+
+    if (!user) return null;
+
+    return this.getUserAvatarURL(user);
   }
   async findById(_id: string) {
-    return this.getUserAvatarURL(await User.findById(_id) as unknown as IUser);
+    const user = await User.findById(_id) as unknown as IUser;
+
+    if (!user) return null;
+
+    return this.getUserAvatarURL(user);
   }
   async findByIdAndUpdate(_id: string, query: OptionalKeys<IUser>) {
     return await User.findByIdAndUpdate(_id, {
