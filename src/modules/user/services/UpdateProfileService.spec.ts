@@ -3,17 +3,20 @@ import HashProviderMock from "../providers/HashProvider/mocks/HashProviderMock";
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import UpdateProfileService from "./UpdateProfileService";
 import AppError from '@shared/errors/AppError';
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 
 let service: UpdateProfileService;
 let userDao: UserDAOMock;
 let HashProvider: HashProviderMock;
+let cacheProvider: CacheProviderMock;
 
 describe('Update user profile', () => {
   beforeEach(() => {
     userDao = new UserDAOMock();
     HashProvider = new HashProviderMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new UpdateProfileService(userDao, HashProvider);
+    service = new UpdateProfileService(userDao, HashProvider, cacheProvider);
   });
 
   it('should be able to update the user', async () => {

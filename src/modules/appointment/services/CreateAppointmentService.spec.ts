@@ -3,17 +3,20 @@ import AppError from '@shared/errors/AppError';
 import AppointmentDAOMock from "../DAOs/mocks/AppointmentDAOMock";
 import CreateAppointmentService from "./CreateAppointmentService";
 import NotificationDAOMock from '@modules/notifications/DAOs/mocks/NotificationDAOMock';
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 
 let service: CreateAppointmentService;
 let appointmentDao: AppointmentDAOMock;
 let notificationsDao: NotificationDAOMock;
+let cacheProvider: CacheProviderMock;
 
 describe('Create appointment', () => {
   beforeEach(() => {
     appointmentDao = new AppointmentDAOMock();
-    notificationsDao = new NotificationDAOMock()
+    notificationsDao = new NotificationDAOMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new CreateAppointmentService(appointmentDao, notificationsDao);
+    service = new CreateAppointmentService(appointmentDao, notificationsDao, cacheProvider);
   })
 
   it('should be able to create a new appointment', async () => {
@@ -39,7 +42,7 @@ describe('Create appointment', () => {
       }
     );
 
-    expect(service.execute(
+    await expect(service.execute(
       {
         date: date,
         providerId: 'ffff',

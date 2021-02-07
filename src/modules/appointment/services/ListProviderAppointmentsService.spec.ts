@@ -1,18 +1,18 @@
 import 'reflect-metadata';
 import AppointmentDAOMock from "../DAOs/mocks/AppointmentDAOMock";
-import UserDAOMock from "@modules/user/DAOs/mocks/UserDAOMock";
 import ListProviderAppointmentsService from "./ListProviderAppointmentsService";
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 
 let service: ListProviderAppointmentsService;
 let appointmentDao: AppointmentDAOMock;
-let userDao: UserDAOMock;
+let cacheProvider: CacheProviderMock;
 
 describe('List provider appointments', () => {
   beforeEach(() => {
     appointmentDao = new AppointmentDAOMock();
-    userDao = new UserDAOMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new ListProviderAppointmentsService(appointmentDao);
+    service = new ListProviderAppointmentsService(appointmentDao, cacheProvider);
   });
 
   it('should be able to list provider appointments', async () => {

@@ -2,15 +2,18 @@ import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
 import UserDAOMock from "@modules/user/DAOs/mocks/UserDAOMock";
 import ListProvidersService from "./ListProvidersService";
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 
 let service: ListProvidersService;
 let userDao: UserDAOMock;
+let cacheProvider: CacheProviderMock;
 
 describe('Show user profile', () => {
   beforeEach(() => {
     userDao = new UserDAOMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new ListProvidersService(userDao);
+    service = new ListProvidersService(userDao, cacheProvider);
   });
 
   it('should be able to list providers', async () => {

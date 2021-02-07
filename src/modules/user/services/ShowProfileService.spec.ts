@@ -1,16 +1,19 @@
 import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import ShowProfileService from "./ShowProfileService";
 
 let service: ShowProfileService;
 let userDao: UserDAOMock;
+let cacheProvider: CacheProviderMock;
 
 describe('Show user profile', () => {
   beforeEach(() => {
     userDao = new UserDAOMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new ShowProfileService(userDao);
+    service = new ShowProfileService(userDao, cacheProvider);
   });
 
   it('should be able to show the user profile', async () => {

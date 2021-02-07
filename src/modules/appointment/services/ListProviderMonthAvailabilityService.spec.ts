@@ -1,15 +1,20 @@
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 import 'reflect-metadata';
 import AppointmentDAOMock from '../DAOs/mocks/AppointmentDAOMock';
 import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService';
 
 let appointmentDao: AppointmentDAOMock;
 let service: ListProviderMonthAvailabilityService;
+let cacheProvider: CacheProviderMock;
 
 describe('List the month availability', () => {
   beforeEach(() => {
     appointmentDao = new AppointmentDAOMock();
+    cacheProvider = new CacheProviderMock();
+
     service = new ListProviderMonthAvailabilityService(
       appointmentDao,
+      cacheProvider
     );
   });
 

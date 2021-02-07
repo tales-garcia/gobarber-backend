@@ -2,17 +2,20 @@ import 'reflect-metadata';
 import DiskStorageProviderMock from "@shared/container/providers/StorageProvider/mocks/DiskStorageProviderMock";
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import UpdateAvatarService from "./UpdateAvatarService";
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 
 let service: UpdateAvatarService;
 let userDao: UserDAOMock;
 let diskStorageProvider: DiskStorageProviderMock;
+let cacheProvider: CacheProviderMock;
 
 describe('Update user avatar', () => {
   beforeEach(() => {
     userDao = new UserDAOMock();
     diskStorageProvider = new DiskStorageProviderMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new UpdateAvatarService(userDao, diskStorageProvider);
+    service = new UpdateAvatarService(userDao, diskStorageProvider, cacheProvider);
   })
 
   it('should be able to update a created user avatar', async () => {

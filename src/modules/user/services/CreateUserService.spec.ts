@@ -1,19 +1,22 @@
 import AppError from '@shared/errors/AppError';
 import 'reflect-metadata';
+import CacheProviderMock from '@shared/container/providers/CacheProvider/mocks/CacheProviderMock';
 import UserDAOMock from "../DAOs/mocks/UserDAOMock";
 import HashProviderMock from '../providers/HashProvider/mocks/HashProviderMock';
 import CreateUserService from "./CreateUserService";
 
 let hashProvider: HashProviderMock;
 let userDao: UserDAOMock;
+let cacheProvider: CacheProviderMock;
 let service: CreateUserService;
 
 describe('Create user', () => {
   beforeEach(() => {
     userDao = new UserDAOMock();
     hashProvider = new HashProviderMock();
+    cacheProvider = new CacheProviderMock();
 
-    service = new CreateUserService(userDao, hashProvider);
+    service = new CreateUserService(userDao, hashProvider, cacheProvider);
   });
   it('should be able to create a new user', async () => {
     const user = await service.execute(
