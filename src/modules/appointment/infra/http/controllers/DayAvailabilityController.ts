@@ -4,13 +4,13 @@ import ListProviderDayAvailabilityService from "@modules/appointment/services/Li
 
 export default {
   async index(req: Request, res: Response) {
-    const { day, month, year } = req.body;
+    const { day, month, year } = req.query;
     const { id } = req.params;
     const availability = await container.resolve(ListProviderDayAvailabilityService).execute({
       providerId: id,
-      day,
-      month,
-      year
+      day: Number(day),
+      month: Number(month),
+      year: Number(year)
     });
 
     return res.status(200).json(availability);

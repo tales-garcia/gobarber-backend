@@ -5,13 +5,13 @@ import ListProviderAppointmentsService from "@modules/appointment/services/ListP
 export default {
   async index(req: Request, res: Response) {
     const providerId = req.userId;
-    const { day, month, year } = req.body;
+    const { day, month, year } = req.query;
 
     const appointments = await container.resolve(ListProviderAppointmentsService).execute({
       providerId,
-      day,
-      month,
-      year
+      day: Number(day),
+      month: Number(month),
+      year: Number(year)
     });
 
     return res.status(200).json(appointments);
