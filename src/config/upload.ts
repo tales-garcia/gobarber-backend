@@ -1,6 +1,6 @@
 import multer, { StorageEngine } from 'multer';
 import path from 'path';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 interface IUploadConfig {
   driver: 'disk' | 's3';
@@ -29,7 +29,7 @@ export default {
     storage: multer.diskStorage({
       destination: tmpFolder,
       filename: (req, file, callback) => {
-        const filename = `${req.userId}-${uuid()}-${Date.now().toString()}-${file.originalname}`;
+        const filename = `${req.userId}-${v4()}-${Date.now().toString()}-${file.originalname}`;
 
         callback(null, filename);
       }

@@ -3,7 +3,7 @@ import IAppointmentDTO from "@modules/appointment/DTOs/IAppointmentDTO";
 import IFindAllInDayFromProviderDTO from "@modules/appointment/DTOs/IFindAllInDayFromProviderDTO";
 import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllInMonthFromProviderDTO";
 import { getMonth, getYear, getDate } from "date-fns";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 
 interface Appointment extends Assign<IAppointmentDTO, "_id", string> {}
 
@@ -51,7 +51,7 @@ export default class AppointmentDAOMock implements IAppointmentDAO {
   async create(appointmentDto: IAppointmentDTO) {
     const appointment: Appointment = appointmentDto as Appointment;
 
-    appointment._id = uuid();
+    appointment._id = v4();
 
     this.appointments.push(appointment);
     return appointment;

@@ -1,5 +1,5 @@
 import IUserTokenDTO from "@modules/user/DTOs/IUserTokenDTO";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 import IUserTokenDAO from "../IUserTokenDAO";
 
 type IUserToken = Assign<Assign<IUserTokenDTO, "_id" | "token", string>, "createdAt" | "updatedAt", Date>;
@@ -10,8 +10,8 @@ export default class UserTokenDAOMock implements IUserTokenDAO {
   async generate(userId: string) {
     const token = {
       userId,
-      _id: uuid(),
-      token: uuid(),
+      _id: v4(),
+      token: v4(),
       createdAt: new Date(),
       updatedAt: new Date()
     };

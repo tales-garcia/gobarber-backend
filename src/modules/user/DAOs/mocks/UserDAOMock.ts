@@ -1,7 +1,7 @@
 import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import IFindDTO from "@modules/user/DTOs/IFindDTO";
 import IUserDtO from "@modules/user/DTOs/IUserDTO";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 import uploadConfig from '@config/upload';
 
 interface IUser extends Assign<IUserDtO, "_id", string> {}
@@ -61,7 +61,7 @@ export default class UserDAOMock implements IUserDAO {
   async create(user: IUserDtO) {
     const createdUser: IUser = {
       ...user,
-      _id: uuid()
+      _id: v4()
     };
 
     this.users.push(createdUser);
