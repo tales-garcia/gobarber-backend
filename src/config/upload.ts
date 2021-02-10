@@ -18,9 +18,9 @@ interface IUploadConfig {
   };
 }
 
-export const tmpFolder = process.env.NODE_ENV === 'prod' ? path.resolve(__dirname, 'tmp') : path.resolve(__dirname, '..', '..', 'tmp');
+export const tmpFolder = path.join(__dirname, path.normalize(process.env.TMP_FOLDER));
 
-export const uploadsFolder = process.env.NODE_ENV === 'prod' ? path.resolve(__dirname, 'tmp', 'uploads') : path.resolve(__dirname, '..', '..', 'tmp', 'uploads');
+export const uploadsFolder = path.join(tmpFolder, 'uploads');
 
 export default {
   driver: process.env.STORAGE_DRIVER || 'disk',

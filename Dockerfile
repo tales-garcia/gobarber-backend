@@ -10,8 +10,6 @@ RUN npm install
 
 RUN npm run build
 
-RUN mkdir dist/tmp
-
-RUN mkdir dist/tmp/uploads
+RUN mkdir /tmp/uploads
 
 ENTRYPOINT ["npm", "run", "prod:server"]

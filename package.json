@@ -8,7 +8,7 @@
     "js:build": "tsc -p .",
     "js:replace": "tscpaths -p tsconfig.json -s ./src -o ./tmp/javascript",
     "js:bundle": "browserify --no-bundle-external --entry tmp/javascript/shared/infra/http/server.js --outfile ./dist/bundle.js",
-    "prod:server": "NODE_ENV=prod node dist/bundle.js",
+    "prod:server": "node dist/bundle.js",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "commit": "cz",
     "test": "jest"
