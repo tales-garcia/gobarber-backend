@@ -10,8 +10,6 @@ RUN npm install
 
 RUN npm run build
 
-RUN npm run js:bundle
-
 RUN mkdir dist/tmp
 
 RUN mkdir dist/tmp/uploads
