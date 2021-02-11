@@ -29,9 +29,9 @@ class ListProviderMonthAvailabilityService {
     year,
     month,
   }: IRequest): Promise<IResponse> {
-    const cache = await this.cacheProvider.recover(`provider-appointment-month-availability-${providerId}-${year}-${month}`);
+    // const cache = await this.cacheProvider.recover(`provider-appointment-month-availability-${providerId}-${year}-${month}`);
 
-    if (cache) return cache;
+    // if (cache) return cache;
 
     const appointments = await this.appointmentDao.findAllInMonthFromProvider({
       providerId,
@@ -53,7 +53,7 @@ class ListProviderMonthAvailabilityService {
 
       return {
         day,
-        available: !(appointmentsInDay.length < 10 || isAfter(currentDate, compareDate))
+        available: !(appointmentsInDay.length >= 9 || isAfter(currentDate, compareDate))
       };
     });
 
