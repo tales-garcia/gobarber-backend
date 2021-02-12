@@ -1,4 +1,5 @@
 import IAppointmentDAO from "@modules/appointment/DAOs/IAppointmentDAO";
+import IUserDAO from "@modules/user/DAOs/IUserDAO";
 import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 import { inject, injectable } from "tsyringe";
 import IAppointmentDTO from "../DTOs/IAppointmentDTO";
@@ -15,6 +16,8 @@ export default class ListProviderAppointmentsService {
   constructor(
     @inject('AppointmentDAO')
     private appointmentDao: IAppointmentDAO,
+    @inject('UserDAO')
+    private userDao: IUserDAO,
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider
   ) { }
@@ -30,6 +33,20 @@ export default class ListProviderAppointmentsService {
       month: month,
       year
     });
+
+    for (let i = 0; i < appointments.length; i++) {
+      const realAppointment = {
+        _id: appointments[i]._id,
+        date: appointments[i].date,
+        providerId: appointments[i].providerId,
+        clientId: appointments[i].clientId
+      }
+
+      appointments[i] = {
+        ...realAppointment,
+        client: await this.userDao.findById(appointments[i].clientId)
+      };
+    }
 
     await this.cacheProvider.save(`provider-appointments:${providerId}-${year}-${month}-${day}`, appointments);
 

@@ -4,7 +4,7 @@ import IFindAllInDayFromProviderDTO from "@modules/appointment/DTOs/IFindAllInDa
 import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllInMonthFromProviderDTO";
 import Appointment from "../schemas/appointment"
 
-interface IAppointment extends Assign<IAppointmentDTO, "_id", string> {}
+interface IAppointment extends Assign<Assign<IAppointmentDTO, "_id", string>, "client", any> {}
 
 export default class AppointmentDAO implements IAppointmentDAO {
   async findByDate(date: Date) {

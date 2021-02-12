@@ -2,7 +2,7 @@ import IAppointmentDTO from "../DTOs/IAppointmentDTO";
 import IFindAllInMonthFromProviderDTO from "../DTOs/IFindAllInMonthFromProviderDTO";
 import IFindAllInDayFromProviderDTO from "../DTOs/IFindAllInDayFromProviderDTO";
 
-type IAppointment = Assign<IAppointmentDTO, "_id", string>;
+type IAppointment = Assign<Assign<IAppointmentDTO, "_id", string>, "client", any>;
 
 export default interface IAppointmentDAO {
   create(appointment: IAppointmentDTO): Promise<IAppointment>;
