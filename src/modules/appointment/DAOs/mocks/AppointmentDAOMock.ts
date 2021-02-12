@@ -5,7 +5,7 @@ import IFindAllInMonthFromProviderDTO from "@modules/appointment/DTOs/IFindAllIn
 import { getMonth, getYear, getDate } from "date-fns";
 import { v4 } from "uuid";
 
-interface Appointment extends Assign<IAppointmentDTO, "_id", string> {}
+interface Appointment extends Assign<Assign<IAppointmentDTO, "_id", string>, "client", any> {}
 
 export default class AppointmentDAOMock implements IAppointmentDAO {
   private appointments: Appointment[] = [];
