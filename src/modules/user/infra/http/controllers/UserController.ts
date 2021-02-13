@@ -20,11 +20,11 @@ export default {
   async updateAvatar(req: Request, res: Response) {
     const { filename } = req.file;
 
-    await container.resolve(UpdateAvatarService).execute({
+    const updatedUser = await container.resolve(UpdateAvatarService).execute({
       filename,
       userId: req.userId
     });
 
-    return res.status(204).send();
+    return res.status(200).json(updatedUser);
   }
 }

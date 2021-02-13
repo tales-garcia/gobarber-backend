@@ -33,5 +33,7 @@ export default class UpdateAvatarService {
     await this.userDao.findByIdAndUpdate(userId, {
         avatar: filename
     });
+
+    return await this.userDao.findById(userId);
   }
 }
