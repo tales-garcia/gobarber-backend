@@ -22,11 +22,11 @@ export default class UserDAO implements IUserDAO {
     return this.getUserAvatarURL(user);
   }
   async findByIdAndUpdate(_id: string, query: OptionalKeys<IUser>) {
-    return await User.findByIdAndUpdate(_id, {
+    return this.getUserAvatarURL(await User.findByIdAndUpdate(_id, {
       $set: {
         ...query
       }
-    }) as unknown as IUser;
+    }).exec() as unknown as IUser);
   }
   async find(data?: IFindDTO) {
     if(data && data.excludeId) {
@@ -49,7 +49,7 @@ export default class UserDAO implements IUserDAO {
 
     createdUser.password = undefined;
 
-    return createdUser;
+    return this.getUserAvatarURL(createdUser);
   }
   getUserAvatarURL(user: IUser) {
     if (!user.avatar) return user;
