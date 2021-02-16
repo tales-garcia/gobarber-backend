@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY tsconfig.json ./
 COPY /src ./src
+COPY babel.config.js ./
 
 RUN npm install
 
