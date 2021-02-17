@@ -8,7 +8,7 @@
     "js:build": "babel src --ignore \"src/modules/**/services/*.spec.ts\" --extensions \".js,.ts\" --out-dir tmp/javascript --copy-files",
     "js:bundle": "browserify --transform hbsfy --no-bundle-external --entry tmp/javascript/shared/infra/http/server.js --outfile ./dist/bundle.js",
     "js:minify": "terser dist/bundle.js --compress --mangle --output ./dist/bundle.js",
-    "prod:server": "node dist/bundle.js",
+    "prod:server": "pm2 start dist/bundle.js --name gobarber-api",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "commit": "cz",
     "test": "jest"
@@ -32,6 +32,7 @@
     "mongoose": "^5.10.12",
     "multer": "^1.4.2",
     "nodemailer": "^6.4.17",
+    "pm2": "^4.5.4",
     "rate-limiter-flexible": "^2.2.1",
     "tsyringe": "^4.4.0",
     "uuid": "^8.3.2"
